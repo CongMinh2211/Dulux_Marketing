@@ -1,0 +1,1050 @@
+/* =========================================
+   1. FONTS & VARIABLES (PREMIUM LOOK)
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap');
+
+:root {
+    /* Brand Colors */
+    --dulux-blue: #005EB8;
+    --dulux-teal: #00A9CE;
+    --dulux-dark-blue: #003B73;
+    --dulux-orange: #EA7600;
+
+    /* Neutrals & Accents */
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
+
+    /* Effects */
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 20px 40px rgba(0, 94, 184, 0.15);
+    --gradient-primary: linear-gradient(135deg, var(--dulux-blue), var(--dulux-teal));
+    --font-heading: 'Montserrat', sans-serif;
+}
+
+
+
+
+/* Global Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.7;
+    padding-top: 100px;
+    /* Prevent fixed navbar overlap */
+}
+
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================================
+   3. HERO SECTION (PARALLAX & ANIMATION)
+   ========================================= */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    background-color: #003B73;
+    /* Fallback Dark Blue */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-top: -100px;
+    /* Counteract body padding for full screen hero */
+    padding-top: 100px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 59, 115, 0.8), rgba(0, 169, 206, 0.6));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 60px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 25px;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease-out 0.2s backwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   4. PREMIUM BUTTONS
+   ========================================= */
+.btn-primary-custom {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 20px rgba(0, 94, 184, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-primary-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--dulux-teal), var(--dulux-blue));
+    z-index: -1;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 94, 184, 0.4);
+    color: white;
+}
+
+.btn-primary-custom:hover::before {
+    opacity: 1;
+}
+
+.btn-outline-custom {
+    background: transparent;
+    border: 2px solid var(--dulux-blue);
+    color: var(--dulux-blue);
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-custom:hover {
+    background: var(--dulux-blue);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 94, 184, 0.2);
+}
+
+/* =========================================
+   5. CARDS & SECTIONS (HOVER EFFECTS)
+   ========================================= */
+section {
+    padding: 100px 0;
+    /* Increased padding for airy feel */
+}
+
+.section-title {
+    margin-bottom: 70px;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: var(--dulux-dark-blue);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background: var(--dulux-teal);
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.p-4.rounded {
+    border-radius: 20px !important;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.p-4.rounded:hover {
+    transform: translateY(-15px);
+    box-shadow: var(--shadow-hover) !important;
+}
+
+/* Product Cards */
+.product-card {
+    border: none;
+    border-radius: 16px;
+    /* Softer radius */
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    /* Softer shadow */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 50px rgba(0, 94, 184, 0.15);
+}
+
+.product-img-wrapper {
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.product-card:hover .product-img-wrapper img {
+    transform: scale(1.15);
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-title {
+    font-weight: 700;
+    color: var(--dulux-dark-blue);
+    margin-bottom: 10px;
+}
+
+/* =========================================
+   6. TIMELINE & ABOUT (Refined)
+   ========================================= */
+.timeline::after {
+    background: var(--gradient-primary);
+    width: 4px;
+}
+
+.timeline-container::after {
+    border-color: var(--dulux-teal);
+    width: 20px;
+    height: 20px;
+    right: -12px;
+    box-shadow: 0 0 0 4px rgba(0, 169, 206, 0.2);
+}
+
+.timeline-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: var(--shadow-soft);
+    padding: 30px;
+    transition: transform 0.3s;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+}
+
+.timeline-content h4 {
+    color: var(--dulux-blue);
+    font-weight: 700;
+}
+
+/* =========================================
+   7. VISUALIZER & TOOLS
+   ========================================= */
+.visualizer-container {
+    border-radius: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border: 5px solid white;
+}
+
+.color-swatch {
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.color-swatch:hover {
+    transform: scale(1.2);
+    z-index: 10;
+}
+
+.calculator-card {
+    border-radius: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-soft);
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #fcfcfc;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 3px rgba(0, 94, 184, 0.1);
+    border-color: var(--dulux-blue);
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   8. FOOTER (Dark & Sleek)
+   ========================================= */
+footer {
+    background: #111;
+    color: #f8f9fa;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+footer .text-muted {
+    color: #d1d1d1 !important;
+}
+
+footer i {
+    color: var(--dulux-teal);
+}
+
+.footer-title {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.social-icons a {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+.social-icons a:hover {
+    background: var(--dulux-blue);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* =========================================
+   9. SIDEBAR & FILTERS
+   ========================================= */
+.sidebar-filter {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.filter-group h5 {
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dulux-dark-blue);
+}
+
+.filter-link {
+    display: block;
+    padding: 8px 0;
+    color: var(--text-light);
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s;
+}
+
+.filter-link:last-child {
+    border-bottom: none;
+}
+
+.filter-link:hover {
+    color: var(--dulux-blue);
+    padding-left: 5px;
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    border-radius: 50px;
+    padding-left: 40px;
+    border: 1px solid #e0e0e0;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* =========================================
+   10. RESPONSIVE TWEAKS (Refined)
+   ========================================= */
+@media (max-width: 992px) {
+
+    /* Laptop/Tablet adjustments */
+    section {
+        padding: 60px 0;
+        /* Reduce padding */
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+        /* Smaller hero title */
+    }
+
+    .section-title h2 {
+        font-size: 2.2rem;
+    }
+
+    .color-palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 10px;
+    }
+
+    .product-card-new {
+        padding: 15px;
+        /* Compact product card */
+    }
+
+    .product-card-new h5 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Mobile adjustments */
+    body {
+        padding-top: 70px;
+        /* Smaller navbar offset */
+    }
+
+    section {
+        padding: 40px 0;
+    }
+
+    .hero-section {
+        background-attachment: scroll;
+        height: auto;
+        min-height: auto;
+        /* Allow content to dictate height */
+        padding-top: 80px;
+        /* Adjust for smaller navbar */
+        padding-bottom: 60px;
+        margin-top: 0;
+    }
+
+    .hero-content {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        /* Much smaller for mobile */
+        margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+
+    /* Compact Cards */
+    .p-4.rounded {
+        padding: 1.25rem !important;
+        /* Reduce padding */
+    }
+
+    .fas.fa-3x {
+        font-size: 2em;
+        /* Shrink icons */
+    }
+
+    .visualizer-info {
+        bottom: 10px;
+        left: 10px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .calculator-card {
+        padding: 20px;
+    }
+
+    #litresResult {
+        font-size: 2.5rem;
+    }
+
+    /* Sidebar Filters */
+    .sidebar-filter {
+        margin-bottom: 30px;
+    }
+
+    .navbar {
+        background: white;
+        padding: 10px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link {
+        color: #333 !important;
+    }
+}
+
+/* =========================================
+   11. CALCULATOR STYLES (Added)
+   ========================================= */
+.calculator-card {
+    background: white;
+    padding: 40px;
+}
+
+.result-box {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.result-box h4 {
+    color: var(--dulux-dark-blue);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+#litresResult {
+    font-size: 3.5rem;
+    color: var(--dulux-blue);
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+/* =========================================
+   12. DULUX BRAND ENHANCEMENTS
+   ========================================= */
+.dulux-flourish {
+    height: 6px;
+    background: linear-gradient(90deg, #EA7600 0%, #E94E1B 20%, #C6007E 40%, #005EB8 60%, #00A9CE 80%, #93C90E 100%);
+    width: 100%;
+    position: relative;
+    z-index: 1020;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.product-card {
+    border-radius: 16px;
+    /* Softer radius */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    /* Softer shadow */
+}
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 50px rgba(0, 94, 184, 0.15);
+}
+
+/* =========================================
+   13. UTILITY CLASSES (Added)
+   ========================================= */
+.bg-light-custom {
+    background-color: #f8f9fa;
+}
+
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* =========================================
+   14. NEW VISUALIZER STYLES
+   ========================================= */
+.visualizer-wrapper {
+    position: relative;
+    background: #f0f0f0;
+}
+
+.wall-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    mix-blend-mode: multiply;
+    /* Key for realistic paint effect */
+    transition: background-color 0.5s ease;
+    pointer-events: none;
+    /* Let clicks pass through if needed */
+    /* Masking to only show on walls - Simplified for demo */
+    /* In a real app, use SVG mask or Clip-path */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 0% 85%);
+}
+
+.visualizer-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+/* =========================================
+   15. EXPANDED PALETTE STYLES
+   ========================================= */
+.scrollable-palette {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbar */
+.scrollable-palette::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollable-palette::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollable-palette::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.scrollable-palette::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.color-palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 15px;
+}
+
+.color-swatch {
+    width: 100%;
+    padding-bottom: 100%;
+    /* Square aspect ratio */
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.color-swatch:hover {
+    transform: scale(1.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    border-color: white;
+}
+
+.color-swatch.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px var(--dulux-blue);
+    border-color: white;
+}
+
+/* Tooltip on hover */
+.color-swatch::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 100;
+}
+
+.color-swatch:hover::after {
+    opacity: 1;
+}
+
+/* Nav Pills Custom */
+.nav-pills .nav-link {
+    color: var(--text-light);
+    font-weight: 600;
+    background: #f8f9fa;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--dulux-blue);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 94, 184, 0.3);
+}
+
+/* =========================================
+   16. INSPIRATION GALLERY
+   ========================================= */
+.inspiration-item {
+    cursor: pointer;
+}
+
+.inspiration-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.inspiration-item:hover .inspiration-overlay {
+    opacity: 1;
+}
+
+.inspiration-item img {
+    transition: transform 0.5s ease;
+}
+
+.inspiration-item:hover img {
+    transform: scale(1.1);
+}
+
+/* =========================================
+   17. RESPONSIVE ADJUSTMENTS (Mobile/Laptop)
+   ========================================= */
+/* See Section 10 for the refined responsive rules */
+
+/* =========================================
+   18. ABOUT PAGE ENHANCEMENTS
+   ========================================= */
+.about-hero {
+    background: url('https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+    background-size: cover;
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    margin-top: -100px;
+    /* Counteract body padding */
+    padding-top: 100px;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 59, 115, 0.7);
+    /* Dark blue overlay */
+}
+
+.value-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    height: 100%;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--dulux-teal);
+}
+
+.value-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--bg-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--dulux-blue);
+    font-size: 2rem;
+    transition: all 0.3s;
+}
+
+.value-card:hover .value-icon {
+    background: var(--dulux-blue);
+    color: white;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 24px;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.team-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.team-img {
+    height: 300px;
+    overflow: hidden;
+}
+
+.team-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.team-card:hover .team-img img {
+    transform: scale(1.1);
+}
+
+/* =========================================
+   19. PRODUCT PAGE REFACTOR (Dulux Style)
+   ========================================= */
+/* Sidebar */
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dulux-dark-blue);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-category {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.filter-category h6 {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.custom-checkbox .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.custom-checkbox .form-check-input:checked {
+    background-color: var(--dulux-teal);
+    border-color: var(--dulux-teal);
+}
+
+.custom-checkbox .form-check-label {
+    font-size: 0.95rem;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Product Card Redesign */
+.product-card-new {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: white;
+    padding: 20px;
+    height: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card-new:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-color: transparent;
+}
+
+.product-card-new .wishlist-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.product-card-new .wishlist-icon:hover {
+    color: var(--dulux-orange);
+}
+
+.product-card-new img {
+    max-height: 200px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    align-self: center;
+}
+
+.product-card-new h5 {
+    font-size: 1.1rem;
+    color: var(--dulux-dark-blue);
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    min-height: 3.3em;
+    /* 2 lines approx */
+}
+
+.product-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    flex-grow: 1;
+}
+
+.product-features li {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.product-features li i {
+    color: var(--dulux-teal);
+    margin-right: 8px;
+    margin-top: 3px;
+}
+
+.store-link {
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+.store-link i {
+    margin-right: 5px;
+}
+
+.store-link:hover {
+    color: var(--dulux-blue);
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    /* Align to right */
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    margin-top: auto;
+}
