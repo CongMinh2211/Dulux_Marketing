@@ -5,44 +5,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bài Viết Dulux - Chia Sẻ Cảm Hứng</title>
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Newspaper Layout Specific Styles */
+        .news-hero-large {
+            height: 400px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .news-hero-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .news-hero-large:hover img {
+            transform: scale(1.05);
+        }
+
+        .news-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 20px;
+            color: white;
+        }
+
+        .news-hero-small {
+            height: 190px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .news-hero-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-list-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .news-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-list-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
     <div id="header-placeholder"></div>
 
-    <div class="container mt-5">
+    <div class="container mt-4">
+        <!-- Header Actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h2 class="fw-bold text-primary-custom m-0">Bài Viết & Cảm Hứng</h2>
+            <div id="create-post-wrapper" class="d-none">
+                <a href="create-post.html" class="btn btn-primary-custom rounded-pill btn-sm">
+                    <i class="fas fa-pen-fancy me-2"></i>Viết Bài Ngay
+                </a>
+            </div>
+        </div>
 
-        <!-- MAIN APP SECTION -->
-        <div id="main-app" class="row justify-content-center">
-            <div class="col-lg-8">
+        <div id="loading-feed" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Đang tải nội dung...</p>
+        </div>
 
-                <!-- Create Post Button (Visible only when logged in) -->
-                <div id="create-post-wrapper" class="d-none mb-4 text-center">
-                    <a href="create-post.html" class="btn btn-primary-custom btn-lg w-100 rounded-pill shadow-sm">
-                        <i class="fas fa-pen-fancy me-2"></i>Tạo bài viết mới
-                    </a>
+        <!-- Content Container (Hidden initially) -->
+        <div id="news-content" style="display: none;">
+
+            <!-- Hero Section -->
+            <div class="row mb-4">
+                <div class="col-lg-8">
+                    <div id="hero-large"></div>
                 </div>
+                <div class="col-lg-4">
+                    <div id="hero-small-1"></div>
+                    <div id="hero-small-2"></div>
+                </div>
+            </div>
 
-                <!-- Newsfeed -->
-                <h5 class="mb-4 fw-bold text-dark border-start border-4 border-primary ps-3">Bảng Tin Bài Viết
-                </h5>
-
-                <div id="loading-feed" class="loading-spinner">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+            <!-- Main Content & Sidebar -->
+            <div class="row">
+                <!-- Left Column: Latest News -->
+                <div class="col-lg-8">
+                    <h4 class="fw-bold border-start border-4 border-primary ps-3 mb-4">Mới Nhất</h4>
+                    <div id="latest-news-list">
+                        <!-- List items injected here -->
                     </div>
-                    <p class="mt-2 text-muted">Đang tải bài viết...</p>
                 </div>
 
-                <div id="posts-container">
-                    <!-- Posts will be injected here by JS -->
-                </div>
+                <!-- Right Column: Sidebar -->
+                <div class="col-lg-4">
+                    <div class="bg-light p-4 rounded-3 mb-4">
+                        <h5 class="fw-bold mb-3">Chủ Đề Nổi Bật</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-white text-dark border p-2">Màu Sắc 2025</span>
+                            <span class="badge bg-white text-dark border p-2">Trang Trí Nhà</span>
+                            <span class="badge bg-white text-dark border p-2">Phong Thủy</span>
+                            <span class="badge bg-white text-dark border p-2">Sơn Ngoại Thất</span>
+                        </div>
+                    </div>
 
+                    <h5 class="fw-bold mb-3 border-bottom pb-2">Đọc Nhiều</h5>
+                    <div id="sidebar-news-list">
+                        <!-- Sidebar items injected here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -51,14 +159,10 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // ============================================================
-        // 1. CONFIGURATION
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
             authDomain: "dulux-marketing.firebaseapp.com",
@@ -69,21 +173,22 @@
             measurementId: "G-K3B9M6XQXE"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // DOM Elements
+        // Elements
         const createPostWrapper = document.getElementById('create-post-wrapper');
-        const postsContainer = document.getElementById('posts-container');
         const loadingFeed = document.getElementById('loading-feed');
+        const newsContent = document.getElementById('news-content');
 
-        // ============================================================
-        // 2. AUTHENTICATION LOGIC
-        // ============================================================
+        const heroLarge = document.getElementById('hero-large');
+        const heroSmall1 = document.getElementById('hero-small-1');
+        const heroSmall2 = document.getElementById('hero-small-2');
+        const latestNewsList = document.getElementById('latest-news-list');
+        const sidebarNewsList = document.getElementById('sidebar-news-list');
 
-        // Handle Auth State Changes
+        // Auth Listener
         onAuthStateChanged(auth, (user) => {
             const navBtnLogin = document.getElementById('nav-btn-login');
             const navUserProfile = document.getElementById('nav-user-profile');
@@ -92,119 +197,182 @@
             const navBtnLogout = document.getElementById('nav-btn-logout');
 
             if (user) {
-                // User is signed in
                 if (createPostWrapper) createPostWrapper.classList.remove('d-none');
-
-                // Update Navbar
                 if (navBtnLogin) navBtnLogin.classList.add('d-none');
                 if (navUserProfile) navUserProfile.classList.remove('d-none');
                 if (navAvatar) navAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
                 if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
-
-                // Attach Logout Listener
-                if (navBtnLogout) {
-                    navBtnLogout.onclick = (e) => {
-                        e.preventDefault();
-                        signOut(auth);
-                    };
-                }
-
-                // Load Posts
-                loadPosts();
+                if (navBtnLogout) navBtnLogout.onclick = (e) => { e.preventDefault(); signOut(auth); };
             } else {
-                // User is signed out
                 if (createPostWrapper) createPostWrapper.classList.add('d-none');
-
-                // Update Navbar
                 if (navBtnLogin) navBtnLogin.classList.remove('d-none');
                 if (navUserProfile) navUserProfile.classList.add('d-none');
-
-                // Load Posts (even if logged out, to see feed)
-                loadPosts();
             }
+            loadPosts();
         });
 
-        // ============================================================
-        // 3. POST LOGIC (FIRESTORE)
-        // ============================================================
-
-        // Real-time Feed Listener
         function loadPosts() {
-            loadingFeed.style.display = 'block';
-            postsContainer.innerHTML = ''; // Clear current
-
             const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-            const currentUser = auth.currentUser;
 
-            onSnapshot(q, (querySnapshot) => {
+            onSnapshot(q, (snapshot) => {
                 loadingFeed.style.display = 'none';
-                postsContainer.innerHTML = ''; // Clear to re-render updates
+                newsContent.style.display = 'block';
 
-                if (querySnapshot.empty) {
-                    postsContainer.innerHTML = '<p class="text-center text-muted">Chưa có bài viết nào. Hãy là người đầu tiên!</p>';
+                const posts = [];
+                snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
+
+                if (posts.length === 0) {
+                    latestNewsList.innerHTML = '<p class="text-muted">Chưa có bài viết nào.</p>';
                     return;
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const post = doc.data();
-                    const postId = doc.id;
-                    const date = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('vi-VN') : 'Vừa xong';
-                    const isAuthor = currentUser && currentUser.uid === post.authorId;
+                // Distribute posts
+                // 1. Hero Large (First post)
+                if (posts[0]) renderHeroLarge(posts[0]);
 
-                    const postHTML = `
-                <div class="post-card fade-in" id="post-${postId}">
-                    <div class="post-header justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <div class="user-avatar">${post.authorName ? post.authorName[0].toUpperCase() : 'U'}</div>
-                            <div class="post-info">
-                                <h6>${post.authorName}</h6>
-                                <small>${date}</small>
-                            </div>
-                        </div>
-                        ${isAuthor ? `
-                        <button class="btn btn-sm text-danger" onclick="deletePost('${postId}')" title="Xóa bài viết">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>` : ''}
-                    </div>
-                    <div class="post-content">
-                        <h4 class="post-title">${post.title}</h4>
-                        <p>${post.content}</p>
-                        ${post.image ? `<img src="${post.image}" class="post-image" alt="Post Image">` : ''}
-                    </div>
-                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-4">
-                        <button class="btn btn-sm btn-light text-primary rounded-pill"><i class="far fa-heart me-1"></i> Thích</button>
-                        <button class="btn btn-sm btn-light text-muted rounded-pill ms-2"><i class="far fa-comment me-1"></i> Bình luận</button>
-                    </div>
-                </div>
-            `;
-                    postsContainer.innerHTML += postHTML;
+                // 2. Hero Small (Next 2 posts)
+                if (posts[1]) renderHeroSmall(posts[1], heroSmall1);
+                if (posts[2]) renderHeroSmall(posts[2], heroSmall2);
+
+                // 3. Latest News (Rest of posts)
+                latestNewsList.innerHTML = '';
+                posts.slice(3).forEach(post => {
+                    latestNewsList.innerHTML += renderNewsItem(post);
+                });
+
+                // 4. Sidebar (Randomly pick 5 or just first 5)
+                sidebarNewsList.innerHTML = '';
+                posts.slice(0, 5).forEach(post => {
+                    sidebarNewsList.innerHTML += renderSidebarItem(post);
+                });
+
+                // Add event listeners for delete buttons
+                document.querySelectorAll('.btn-delete-post').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        if (confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+                            try {
+                                await deleteDoc(doc(db, "posts", btn.dataset.id));
+                                alert('Đã xóa bài viết thành công!');
+                            } catch (error) {
+                                console.error("Error removing document: ", error);
+                                alert('Lỗi khi xóa bài viết: ' + error.message);
+                            }
+                        }
+                    });
                 });
             });
         }
 
-        // Make deletePost global so onclick works
-        window.deletePost = async (postId) => {
-            if (confirm("Bạn có chắc chắn muốn xóa bài viết này không?")) {
-                try {
-                    await deleteDoc(doc(db, "posts", postId));
-                    // UI updates automatically via onSnapshot
-                } catch (error) {
-                    alert("Lỗi khi xóa: " + error.message);
-                }
-            }
-        };
+        function renderHeroLarge(post) {
+            const img = post.image || 'https://via.placeholder.com/800x400?text=Dulux+Community';
+            const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
+            const buttonsHtml = isAuthor ? `
+                <div class="position-absolute top-0 end-0 p-3" style="z-index: 2;">
+                    <a href="create-post.html?id=${post.id}" class="btn btn-sm btn-light btn-edit-post border-0 me-1 shadow-sm" title="Sửa bài viết">
+                        <i class="fas fa-edit text-primary"></i>
+                    </a>
+                    <button class="btn btn-sm btn-light btn-delete-post border-0 shadow-sm" data-id="${post.id}" title="Xóa bài viết">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </button>
+                </div>
+            ` : '';
 
-        // Add simple fade-in animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeIn 0.5s ease-out; }
-`;
-        document.head.appendChild(style);
+            heroLarge.innerHTML = `
+                <div class="news-hero-large shadow-sm">
+                    <img src="${img}" alt="${post.title}">
+                    <div class="news-overlay">
+                        <span class="badge bg-primary mb-2">Nổi bật</span>
+                        <h3 class="fw-bold mb-1"><a href="post-detail.html?id=${post.id}" class="text-white text-decoration-none">${post.title}</a></h3>
+                        <small>${post.authorName} - ${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')}</small>
+                    </div>
+                    ${buttonsHtml}
+                    <a href="post-detail.html?id=${post.id}" class="stretched-link" style="z-index: 1;"></a>
+                </div>
+            `;
+        }
 
+        function renderHeroSmall(post, element) {
+            const img = post.image || 'https://via.placeholder.com/400x200?text=Dulux';
+            const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
+            const buttonsHtml = isAuthor ? `
+                <div class="position-absolute top-0 end-0 p-2" style="z-index: 2;">
+                    <a href="create-post.html?id=${post.id}" class="btn btn-sm btn-light btn-edit-post border-0 me-1 shadow-sm" title="Sửa bài viết" style="padding: 0.25rem 0.5rem;">
+                        <i class="fas fa-edit text-primary small"></i>
+                    </a>
+                    <button class="btn btn-sm btn-light btn-delete-post border-0 shadow-sm" data-id="${post.id}" title="Xóa bài viết" style="padding: 0.25rem 0.5rem;">
+                        <i class="fas fa-trash-alt text-danger small"></i>
+                    </button>
+                </div>
+            ` : '';
+
+            element.innerHTML = `
+                <div class="news-hero-small shadow-sm">
+                    <img src="${img}" alt="${post.title}">
+                    <div class="news-overlay p-3">
+                        <h6 class="fw-bold mb-0 text-white">${post.title}</h6>
+                    </div>
+                    ${buttonsHtml}
+                    <a href="post-detail.html?id=${post.id}" class="stretched-link" style="z-index: 1;"></a>
+                </div>
+            `;
+        }
+
+        function renderNewsItem(post) {
+            const img = post.image || 'https://via.placeholder.com/300x200?text=News';
+            // Strip HTML tags for summary
+            const tmp = document.createElement("DIV");
+            tmp.innerHTML = post.content;
+            const summary = tmp.textContent || tmp.innerText || "";
+
+            // Check if current user is author
+            const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
+            const buttonsHtml = isAuthor ? `
+                <div>
+                    <a href="create-post.html?id=${post.id}" class="btn btn-sm btn-outline-primary btn-edit-post border-0 me-1" title="Sửa bài viết">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger btn-delete-post border-0" data-id="${post.id}" title="Xóa bài viết">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            ` : '';
+
+            return `
+                <div class="news-list-item row align-items-center">
+                    <div class="col-md-4">
+                        <a href="post-detail.html?id=${post.id}">
+                            <img src="${img}" class="news-list-img" alt="${post.title}">
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="fw-bold mt-2 mt-md-0"><a href="post-detail.html?id=${post.id}" class="text-decoration-none text-dark hover-primary">${post.title}</a></h5>
+                        <p class="text-muted small mb-2">${summary.substring(0, 120)}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="far fa-clock me-1"></i> ${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')} - <strong>${post.authorName}</strong></small>
+                            ${buttonsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSidebarItem(post) {
+            const img = post.image || 'https://via.placeholder.com/100x100?text=Thumb';
+            return `
+                <div class="sidebar-item">
+                    <a href="post-detail.html?id=${post.id}">
+                        <img src="${img}" class="sidebar-img" alt="${post.title}">
+                    </a>
+                    <div>
+                        <h6 class="mb-1 small fw-bold"><a href="post-detail.html?id=${post.id}" class="text-decoration-none text-dark">${post.title}</a></h6>
+                        <small class="text-muted" style="font-size: 0.75rem;">${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')}</small>
+                    </div>
+                </div>
+            `;
+        }
     </script>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>

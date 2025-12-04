@@ -160,8 +160,9 @@ function loadHeader() {
                     <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tool.html">Phối màu & Tính sơn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tool.html">Tìm kiếm màu sắc </a></li>
                     <li class="nav-item"><a class="nav-link" href="community.html">Bài viết</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pr.html">PR Online</a></li>
                     
                     <!-- Auth Items -->
                     <li class="nav-item ms-lg-3 d-flex align-items-center">
@@ -197,7 +198,6 @@ function loadHeader() {
         setActiveLink();
     }
 }
-
 function loadFooter() {
     const footerPlaceholder = document.getElementById('footer-placeholder');
     if (footerPlaceholder) {
@@ -206,7 +206,7 @@ function loadFooter() {
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h4 class="footer-title">DULUX [NHÓM BẠN]</h4>
+                    <h4 class="footer-title">DULUX NHÓM 6</h4>
                     <p>Giải pháp màu sắc hoàn hảo cho ngôi nhà của bạn.</p>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -231,6 +231,17 @@ function loadFooter() {
     }
 }
 
+// Tawk.to Script
+var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+(function () {
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/6931c4ee1fe45f1982d30c65/1jbl6ihol';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+})();
+
 function setActiveLink() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const navLinks = document.querySelectorAll('.nav-link');
@@ -249,21 +260,36 @@ function setActiveLink() {
    DYNAMIC PRODUCT LOGIC
    ========================================= */
 
-const productImages = [
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/06/3a/13/cf/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/c8/7d/44/1f/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/1a/67/0e/c3/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/ed/b2/95/7f/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/3f/1d/6b/71/a968_160x160px.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/ef/d1/9a/14/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/39/e7/0c/5f/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/51/2e/2e/a3/packshot_medium.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/4c/74/d5/98/picture1_copy.png",
-    "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/bd/0c/e2/64/packshot_medium.png"
+const productsData = [
+    { name: "Dulux Easyclean Lau Chùi Hiệu Quả Bề Mặt Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/c8/7d/44/1f/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Ambiance 5in1 Diamond Glow - Siêu Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/1a/67/0e/c3/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Ambiance 5in1 Pearl Glow - Bóng Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/06/3a/13/cf/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux EasyClean Chống Bám Bẩn Kháng Virus - Bề Mặt Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/ed/b2/95/7f/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux EasyClean Chống Bám Bẩn Kháng Virus - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/3f/1d/6b/71/a968_160x160px.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux EasyClean Lau Chùi Hiệu Quả - Bề Mặt Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/ef/d1/9a/14/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux EasyClean Lau Chùi Hiệu Quả - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/0f/22/b9/f4/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Inspire Nội Thất Sắc Màu Bền Đẹp - Bề Mặt Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/39/e7/0c/5f/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Inspire Nội Thất Sắc Màu Bền Đẹp - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/c2/69/7a/d2/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Better Living Air Clean - Siêu Bóng", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/53/a7/0c/98/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Sơn Lót Nội Thất Cao Cấp Dulux SuperSealer", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/e1/af/26/6f/packshot_medium.png", type: "Sơn Lót", brand: "Dulux" },
+    { name: "Sơn Lót Nội Thất Dulux Ambiance", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/5b/f2/e5/ca/160x160.png", type: "Sơn Lót", brand: "Dulux" },
+    { name: "Sơn Lót Nội Thất Dulux Inspire", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/1b/2b/2c/f3/packshot_medium.png", type: "Sơn Lót", brand: "Dulux" },
+    { name: "Maxilite Total Sơn Nước Nội Thất - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/87/a7/68/e0/packshot_medium.png", type: "Sơn Phủ", brand: "Maxilite" },
+    { name: "Maxilite Hi-Cover Sơn Nước Nội Thất - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/35/5d/bb/6b/packshot_medium.png", type: "Sơn Phủ", brand: "Maxilite" },
+    { name: "Maxilite Smooth Sơn Nước Nội Thất - Bề Mặt Mờ", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/1b/d3/52/d1/page_2.png", type: "Sơn Phủ", brand: "Maxilite" },
+    { name: "Bột Trét Tường Cao Cấp Dulux", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/9b/95/98/18/packshot_medium.png", type: "Bột Trét", brand: "Dulux" },
+    { name: "Bột Trét Tường Nội Thất Maxilite", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/f6/39/64/24/packshot_medium.jpg", type: "Bột Trét", brand: "Maxilite" },
+    { name: "Chống Thấm Sàn Dulux Aquatech Max", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/20/86/c1/10/packshot_medium.png", type: "Chất Chống Thấm", brand: "Dulux" },
+    { name: "Dulux Ambiance Special Effects - Velvet", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/f9/34/3c/56/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Ambiance Special Effects - Linen", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/7f/06/38/92/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Ambiance Special Effects - Marble", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/51/2e/2e/a3/packshot_medium.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Dulux Ambiance Special Effects - Metallic", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/bd/f0/3f/b1/a935_160x160px.png", type: "Sơn Phủ", brand: "Dulux" },
+    { name: "Sơn Lót Chống Kiềm Nội Thất Dulux", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/eb/53/64/3d/packshot_medium.png", type: "Sơn Lót", brand: "Dulux" },
+    { name: "Sơn Lót Maxilite Nội Thất", image: "https://msp.images.akzonobel.com/prd/dh/avndlx/packshots/72/c2/ac/ee/packshot_medium.png", type: "Sơn Lót", brand: "Maxilite" }
 ];
 
 const productTypes = ["Sơn Phủ", "Sơn Lót", "Chất Chống Thấm", "Bột Trét"];
-const locations = ["Ngoại thất", "Nội thất"];
+const locations = ["Nội thất"]; // Only Interior
 const brands = ["Dulux", "Maxilite"];
 const projects = ["Hành lang", "Nhà bếp", "Phòng khách", "Phòng ngủ"];
 
@@ -272,26 +298,19 @@ let filteredProducts = [];
 const itemsPerPage = 9;
 let currentPage = 1;
 
-// Generate Dummy Data
+// Generate Data from Static List
 function generateProducts() {
-    allProducts = [];
-    for (let i = 1; i <= 32; i++) {
-        const type = productTypes[Math.floor(Math.random() * productTypes.length)];
-        const location = locations[Math.floor(Math.random() * locations.length)];
-        const brand = brands[Math.floor(Math.random() * brands.length)];
-        const img = productImages[i % productImages.length];
+    allProducts = productsData.map((p, index) => ({
+        id: index + 1,
+        name: p.name,
+        image: p.image,
+        type: p.type,
+        location: "Nội thất",
+        brand: p.brand,
+        project: projects[Math.floor(Math.random() * projects.length)],
+        features: ["Bảo vệ vượt trội", "Chống thấm hiệu quả", "Màu sắc bền đẹp", "Dễ lau chùi"]
+    }));
 
-        allProducts.push({
-            id: i,
-            name: `${brand} ${type} ${location} Cao Cấp ${i}`,
-            image: img,
-            type: type,
-            location: location,
-            brand: brand,
-            project: projects[Math.floor(Math.random() * projects.length)],
-            features: ["Bảo vệ vượt trội", "Chống thấm hiệu quả", "Màu sắc bền đẹp"]
-        });
-    }
     filteredProducts = [...allProducts];
     updateResultCount();
     renderProducts();
