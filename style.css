@@ -1048,3 +1048,152 @@ footer i {
     padding-top: 15px;
     margin-top: auto;
 }
+
+/* =========================================
+   19. BUG FIXES & OVERRIDES
+   ========================================= */
+/* FORCE HIDE INACTIVE TABS */
+/* This fixes the issue where multiple tabs stack on top of each other */
+.tab-pane:not(.active) {
+    display: none !important;
+}
+/* =========================================
+   20. COMMUNITY SECTION STYLES (New)
+   ========================================= */
+
+/* Create Post Box */
+.create-post-box {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-post-box:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.create-post-box input.form-control,
+.create-post-box textarea.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.create-post-box input.form-control:focus,
+.create-post-box textarea.form-control:focus {
+    background-color: white;
+    border-color: var(--dulux-teal);
+    box-shadow: 0 0 0 4px rgba(0, 169, 206, 0.1);
+}
+
+.create-post-box textarea {
+    resize: none;
+}
+
+/* Post Card */
+.post-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-right: 15px;
+    box-shadow: 0 5px 15px rgba(0, 94, 184, 0.2);
+}
+
+.post-info h6 {
+    margin: 0;
+    color: var(--dulux-dark-blue);
+    font-weight: 700;
+}
+
+.post-info small {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.post-content {
+    margin-bottom: 20px;
+}
+
+.post-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.post-content p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.post-image {
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 15px;
+    object-fit: cover;
+    max-height: 400px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* Post Actions */
+.card-footer {
+    background: transparent;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.btn-light {
+    background: #f8f9fa;
+    border: none;
+    color: var(--text-light);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-light:hover {
+    background: #e9ecef;
+    color: var(--dulux-blue);
+    transform: translateY(-2px);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 40px;
+    display: none;
+}
+

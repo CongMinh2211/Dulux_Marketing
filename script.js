@@ -161,6 +161,30 @@ function loadHeader() {
                     <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="tool.html">Phối màu & Tính sơn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="community.html">Bài viết</a></li>
+                    
+                    <!-- Auth Items -->
+                    <li class="nav-item ms-lg-3 d-flex align-items-center">
+                        <!-- Login Button (Visible when logged out) -->
+                        <a id="nav-btn-login" href="login.html" class="btn btn-outline-primary rounded-pill btn-sm">
+                            <i class="fas fa-user me-2"></i>Đăng Nhập
+                        </a>
+
+                        <!-- User Profile Dropdown (Visible when logged in) -->
+                        <div id="nav-user-profile" class="dropdown d-none">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar me-2" id="nav-avatar" style="width: 35px; height: 35px; font-size: 0.9rem; background-color: #00A9CE; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">U</div>
+                                <span class="fw-bold text-dark small me-2" id="nav-username">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
+                                <li><a class="dropdown-item py-2" href="#" onclick="alert('Tính năng đang phát triển')"><i class="fas fa-address-card me-2 text-primary"></i>Thêm thông tin</a></li>
+                                <li><a class="dropdown-item py-2" href="#" onclick="alert('Tính năng đang phát triển')"><i class="fas fa-key me-2 text-warning"></i>Đổi mật khẩu</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 text-danger" href="#" id="nav-btn-logout"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="nav-item ms-lg-3"><a href="products.html" class="btn btn-primary-custom">Mua Ngay</a>
                     </li>
                 </ul>

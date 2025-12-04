@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Viết Dulux - Chia Sẻ Cảm Hứng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="container mt-5">
+
+        <!-- MAIN APP SECTION -->
+        <div id="main-app" class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Create Post Button (Visible only when logged in) -->
+                <div id="create-post-wrapper" class="d-none mb-4 text-center">
+                    <a href="create-post.html" class="btn btn-primary-custom btn-lg w-100 rounded-pill shadow-sm">
+                        <i class="fas fa-pen-fancy me-2"></i>Tạo bài viết mới
+                    </a>
+                </div>
+
+                <!-- Newsfeed -->
+                <h5 class="mb-4 fw-bold text-dark border-start border-4 border-primary ps-3">Bảng Tin Bài Viết
+                </h5>
+
+                <div id="loading-feed" class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Đang tải bài viết...</p>
+                </div>
+
+                <div id="posts-container">
+                    <!-- Posts will be injected here by JS -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // ============================================================
+        // 1. CONFIGURATION
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
+            authDomain: "dulux-marketing.firebaseapp.com",
+            projectId: "dulux-marketing",
+            storageBucket: "dulux-marketing.firebasestorage.app",
+            messagingSenderId: "1034530661104",
+            appId: "1:1034530661104:web:265368ed2606874ba89835",
+            measurementId: "G-K3B9M6XQXE"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const createPostWrapper = document.getElementById('create-post-wrapper');
+        const postsContainer = document.getElementById('posts-container');
+        const loadingFeed = document.getElementById('loading-feed');
+
+        // ============================================================
+        // 2. AUTHENTICATION LOGIC
+        // ============================================================
+
+        // Handle Auth State Changes
+        onAuthStateChanged(auth, (user) => {
+            const navBtnLogin = document.getElementById('nav-btn-login');
+            const navUserProfile = document.getElementById('nav-user-profile');
+            const navAvatar = document.getElementById('nav-avatar');
+            const navUsername = document.getElementById('nav-username');
+            const navBtnLogout = document.getElementById('nav-btn-logout');
+
+            if (user) {
+                // User is signed in
+                if (createPostWrapper) createPostWrapper.classList.remove('d-none');
+
+                // Update Navbar
+                if (navBtnLogin) navBtnLogin.classList.add('d-none');
+                if (navUserProfile) navUserProfile.classList.remove('d-none');
+                if (navAvatar) navAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
+                if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
+
+                // Attach Logout Listener
+                if (navBtnLogout) {
+                    navBtnLogout.onclick = (e) => {
+                        e.preventDefault();
+                        signOut(auth);
+                    };
+                }
+
+                // Load Posts
+                loadPosts();
+            } else {
+                // User is signed out
+                if (createPostWrapper) createPostWrapper.classList.add('d-none');
+
+                // Update Navbar
+                if (navBtnLogin) navBtnLogin.classList.remove('d-none');
+                if (navUserProfile) navUserProfile.classList.add('d-none');
+
+                // Load Posts (even if logged out, to see feed)
+                loadPosts();
+            }
+        });
+
+        // ============================================================
+        // 3. POST LOGIC (FIRESTORE)
+        // ============================================================
+
+        // Real-time Feed Listener
+        function loadPosts() {
+            loadingFeed.style.display = 'block';
+            postsContainer.innerHTML = ''; // Clear current
+
+            const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+            const currentUser = auth.currentUser;
+
+            onSnapshot(q, (querySnapshot) => {
+                loadingFeed.style.display = 'none';
+                postsContainer.innerHTML = ''; // Clear to re-render updates
+
+                if (querySnapshot.empty) {
+                    postsContainer.innerHTML = '<p class="text-center text-muted">Chưa có bài viết nào. Hãy là người đầu tiên!</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postId = doc.id;
+                    const date = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('vi-VN') : 'Vừa xong';
+                    const isAuthor = currentUser && currentUser.uid === post.authorId;
+
+                    const postHTML = `
+                <div class="post-card fade-in" id="post-${postId}">
+                    <div class="post-header justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar">${post.authorName ? post.authorName[0].toUpperCase() : 'U'}</div>
+                            <div class="post-info">
+                                <h6>${post.authorName}</h6>
+                                <small>${date}</small>
+                            </div>
+                        </div>
+                        ${isAuthor ? `
+                        <button class="btn btn-sm text-danger" onclick="deletePost('${postId}')" title="Xóa bài viết">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>` : ''}
+                    </div>
+                    <div class="post-content">
+                        <h4 class="post-title">${post.title}</h4>
+                        <p>${post.content}</p>
+                        ${post.image ? `<img src="${post.image}" class="post-image" alt="Post Image">` : ''}
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-4">
+                        <button class="btn btn-sm btn-light text-primary rounded-pill"><i class="far fa-heart me-1"></i> Thích</button>
+                        <button class="btn btn-sm btn-light text-muted rounded-pill ms-2"><i class="far fa-comment me-1"></i> Bình luận</button>
+                    </div>
+                </div>
+            `;
+                    postsContainer.innerHTML += postHTML;
+                });
+            });
+        }
+
+        // Make deletePost global so onclick works
+        window.deletePost = async (postId) => {
+            if (confirm("Bạn có chắc chắn muốn xóa bài viết này không?")) {
+                try {
+                    await deleteDoc(doc(db, "posts", postId));
+                    // UI updates automatically via onSnapshot
+                } catch (error) {
+                    alert("Lỗi khi xóa: " + error.message);
+                }
+            }
+        };
+
+        // Add simple fade-in animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.5s ease-out; }
+`;
+        document.head.appendChild(style);
+
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

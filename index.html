@@ -332,6 +332,54 @@
 
     <div id="footer-placeholder"></div>
 
+    <!-- Firebase SDKs & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
+            authDomain: "dulux-marketing.firebaseapp.com",
+            projectId: "dulux-marketing",
+            storageBucket: "dulux-marketing.firebasestorage.app",
+            messagingSenderId: "1034530661104",
+            appId: "1:1034530661104:web:265368ed2606874ba89835",
+            measurementId: "G-K3B9M6XQXE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            const navBtnLogin = document.getElementById('nav-btn-login');
+            const navUserProfile = document.getElementById('nav-user-profile');
+            const navAvatar = document.getElementById('nav-avatar');
+            const navUsername = document.getElementById('nav-username');
+            const navBtnLogout = document.getElementById('nav-btn-logout');
+
+            if (user) {
+                // Update Navbar
+                if (navBtnLogin) navBtnLogin.classList.add('d-none');
+                if (navUserProfile) navUserProfile.classList.remove('d-none');
+                if (navAvatar) navAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
+                if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
+
+                // Attach Logout Listener
+                if (navBtnLogout) {
+                    navBtnLogout.onclick = (e) => {
+                        e.preventDefault();
+                        signOut(auth);
+                    };
+                }
+            } else {
+                // Update Navbar
+                if (navBtnLogin) navBtnLogin.classList.remove('d-none');
+                if (navUserProfile) navUserProfile.classList.add('d-none');
+            }
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
