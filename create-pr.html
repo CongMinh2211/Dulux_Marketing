@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Tin PR - Dulux</title>
-    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180' type='image/x-icon'>
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -70,7 +71,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
@@ -94,6 +95,31 @@
             }
         });
 
+        // Check for Edit Mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('id');
+
+        if (editId) {
+            document.querySelector('h3').innerHTML = '<i class="fas fa-edit me-2"></i>Chỉnh sửa Tin PR';
+            const submitBtn = document.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Cập nhật';
+
+            // Load Data
+            const docRef = doc(db, "pr_articles", editId);
+            getDoc(docRef).then((docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('pr-title').value = data.title;
+                    document.getElementById('pr-content').value = data.content;
+                    document.getElementById('pr-link').value = data.externalLink;
+                    document.getElementById('pr-image').value = data.image || '';
+                } else {
+                    alert("Không tìm thấy bài viết!");
+                    window.location.href = "pr.html";
+                }
+            });
+        }
+
         // Form Submit
         const createPrForm = document.getElementById('create-pr-form');
         createPrForm.addEventListener('submit', async (e) => {
@@ -107,20 +133,31 @@
             const image = document.getElementById('pr-image').value;
 
             try {
-                await addDoc(collection(db, "pr_articles"), {
-                    title: title,
-                    content: content,
-                    externalLink: link,
-                    image: image || null,
-                    authorId: user.uid,
-                    authorName: user.displayName || "Admin",
-                    createdAt: serverTimestamp()
-                });
-                alert("Đăng tin thành công!");
+                if (editId) {
+                    await updateDoc(doc(db, "pr_articles", editId), {
+                        title: title,
+                        content: content,
+                        externalLink: link,
+                        image: image || null,
+                        updatedAt: serverTimestamp()
+                    });
+                    alert("Cập nhật thành công!");
+                } else {
+                    await addDoc(collection(db, "pr_articles"), {
+                        title: title,
+                        content: content,
+                        externalLink: link,
+                        image: image || null,
+                        authorId: user.uid,
+                        authorName: user.displayName || "Admin",
+                        createdAt: serverTimestamp()
+                    });
+                    alert("Đăng tin thành công!");
+                }
                 window.location.href = "pr.html";
             } catch (error) {
-                console.error("Error adding document: ", error);
-                alert("Lỗi khi đăng tin: " + error.message);
+                console.error("Error adding/updating document: ", error);
+                alert("Lỗi: " + error.message);
             }
         });
     </script>

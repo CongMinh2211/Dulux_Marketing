@@ -1,3 +1,22 @@
+// Tawk.to Script
+var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+
+Tawk_API.onLoad = function () {
+    console.log("Tawk.to Widget Loaded");
+};
+Tawk_API.onStatusChange = function (status) {
+    console.log("Tawk.to Status: " + status);
+};
+
+(function () {
+    var s1 = document.createElement("script");
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/6931c4ee1fe45f1982d30c65/1jbl6ihol';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    document.head.appendChild(s1);
+})();
+
 // Initialize AOS Animation
 document.addEventListener('DOMContentLoaded', function () {
     loadHeader();
@@ -231,16 +250,7 @@ function loadFooter() {
     }
 }
 
-// Tawk.to Script
-var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-(function () {
-    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = 'https://embed.tawk.to/6931c4ee1fe45f1982d30c65/1jbl6ihol';
-    s1.charset = 'UTF-8';
-    s1.setAttribute('crossorigin', '*');
-    s0.parentNode.insertBefore(s1, s0);
-})();
+
 
 function setActiveLink() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
