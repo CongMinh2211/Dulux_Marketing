@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin Tức - Dulux News</title>
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --vtc-red: #b30000;
+            --text-color: #333;
+            --bg-gray: #f7f7f7;
+            --link-blue: #0056b3;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            color: var(--text-color);
+        }
+
+        /* Header VTC Style */
+        .vtc-header {
+            background-color: var(--vtc-red);
+            color: white;
+            padding: 0;
+            border-bottom: 3px solid #8a0000;
+        }
+
+        .vtc-top-bar {
+            background-color: #fff;
+            color: #333;
+            padding: 5px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .vtc-logo {
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--vtc-red);
+            text-decoration: none;
+            letter-spacing: -1px;
+            margin-right: 20px;
+        }
+
+        .vtc-nav {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .vtc-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .vtc-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .vtc-nav a.active {
+            background-color: #8a0000;
+        }
+
+        /* Main Layout */
+        .main-container {
+            background-color: #fff;
+            padding-top: 20px;
+        }
+
+        /* Left Sidebar (Social) */
+        .social-sidebar {
+            position: sticky;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .btn-fb {
+            background-color: #1877f2;
+        }
+
+        .btn-zalo {
+            background-color: #0068ff;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .btn-twitter {
+            background-color: #1da1f2;
+        }
+
+        .btn-copy {
+            background-color: #6c757d;
+        }
+
+        /* Article Content */
+        .article-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 15px;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .source-badge {
+            background-color: #eee;
+            color: #555;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .sapo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content-body {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .content-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .content-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+        }
+
+        .content-body figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .content-body figcaption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            background: #f7f7f7;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            color: #b30000;
+            border-bottom: 2px solid #b30000;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+
+        .most-viewed-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .most-viewed-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ddd;
+            line-height: 1;
+        }
+
+        .most-viewed-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .most-viewed-title a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .most-viewed-title a:hover {
+            color: var(--vtc-red);
+        }
+
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .tag-item {
+            background: white;
+            border: 1px solid #ddd;
+            color: #555;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .tag-item:hover {
+            border-color: var(--vtc-red);
+            color: var(--vtc-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .social-sidebar {
+                flex-direction: row;
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+
+            .article-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="vtc-top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="../index.html" class="vtc-logo">DULUX NEWS</a>
+                <span class="text-muted small d-none d-md-block">Hơi thở cuộc sống</span>
+            </div>
+            <div class="small">
+                <a href="#" class="text-muted text-decoration-none me-3"><i class="fas fa-search"></i></a>
+                <a href="#" class="text-muted text-decoration-none"><i class="fas fa-user"></i> Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="vtc-header sticky-top">
+        <div class="container">
+            <nav class="vtc-nav">
+                <a href="#" class="active"><i class="fas fa-home"></i></a>
+                <a href="#">Thời sự</a>
+                <a href="#">Kinh tế</a>
+                <a href="#">Thể thao</a>
+                <a href="#">Thế giới</a>
+                <a href="#">Giáo dục</a>
+                <a href="#">Sức khỏe</a>
+                <a href="#">Đời sống</a>
+                <a href="#">Công nghệ</a>
+                <a href="#">Giải trí</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-container mb-5">
+        <div id="loading" class="text-center py-5">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Đang tải bài viết...</p>
+        </div>
+
+        <div id="content-wrapper" class="row d-none">
+            <!-- Left Sidebar (Social) -->
+            <div class="col-md-1 d-none d-md-block">
+                <div class="social-sidebar">
+                    <a href="#" class="social-btn btn-fb"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn btn-zalo">Zalo</a>
+                    <a href="#" class="social-btn btn-twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-btn btn-copy" title="Sao chép liên kết"><i class="fas fa-link"></i></a>
+                </div>
+            </div>
+
+            <!-- Main Article -->
+            <div class="col-md-7">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb small text-uppercase fw-bold">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-danger">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-danger">Đời sống</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
+                    </ol>
+                </nav>
+
+                <h1 class="article-title" id="post-title">Tiêu đề bài viết</h1>
+
+                <div class="article-meta">
+                    <span class="fw-bold text-danger">DULUX NEWS</span>
+                    <span class="text-muted">|</span>
+                    <span id="post-date">Thứ Sáu, 05/12/2025 20:05:00 +07:00</span>
+                    <span class="source-badge"><i class="fab fa-google"></i> Theo dõi trên Google News</span>
+                </div>
+
+                <div class="sapo" id="post-sapo">
+                    (Dulux News) - Tóm tắt nội dung bài viết sẽ hiển thị ở đây. Đây là phần Sapo đặc trưng của báo chí.
+                </div>
+
+                <div class="content-body" id="post-content">
+                    <!-- Content injected here -->
+                </div>
+
+                <div class="mt-4 p-3 bg-light rounded">
+                    <p class="mb-0 fw-bold">Tác giả: <span id="post-author" class="text-danger">Admin</span></p>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-md-4">
+                <div class="right-sidebar">
+                    <div class="mb-4">
+                        <h5 class="sidebar-title">Khám phá thêm</h5>
+                        <div class="tags-cloud">
+                            <a href="#" class="tag-item">Màu sắc 2025</a>
+                            <a href="#" class="tag-item">Trang trí nhà</a>
+                            <a href="#" class="tag-item">Phong thủy</a>
+                            <a href="#" class="tag-item">Sơn nội thất</a>
+                            <a href="#" class="tag-item">Xu hướng</a>
+                            <a href="#" class="tag-item">Dulux Ambiance</a>
+                        </div>
+                    </div>
+
+                    <!-- Ads Placeholder -->
+                    <div class="mb-4 text-center bg-white p-3 border">
+                        <p class="text-muted small mb-1">Quảng cáo</p>
+                        <img src="https://via.placeholder.com/300x250?text=Quảng+Cáo+Sơn" alt="Ads" class="img-fluid">
+                    </div>
+
+                    <div>
+                        <h5 class="sidebar-title">Xem nhiều</h5>
+                        <div id="most-viewed-list">
+                            <!-- Items injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="text-center py-5 d-none">
+            <h3 class="text-danger">Không tìm thấy bài viết!</h3>
+            <p>Vui lòng kiểm tra lại đường dẫn.</p>
+            <a href="../community.html" class="btn btn-danger mt-3">Quay lại trang chủ</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
+            authDomain: "dulux-marketing.firebaseapp.com",
+            projectId: "dulux-marketing",
+            storageBucket: "dulux-marketing.firebasestorage.app",
+            messagingSenderId: "1034530661104",
+            appId: "1:1034530661104:web:265368ed2606874ba89835",
+            measurementId: "G-K3B9M6XQXE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Load Post
+        async function loadPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+
+            if (!postId) {
+                // If no ID, show a demo or error
+                // document.getElementById('error-message').classList.remove('d-none');
+                // document.getElementById('loading').classList.add('d-none');
+
+                // For demo purposes if no ID is passed, try to load the latest post
+                loadLatestPost();
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "posts", postId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    renderPost(docSnap.data());
+                } else {
+                    document.getElementById('error-message').classList.remove('d-none');
+                    document.getElementById('loading').classList.add('d-none');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('error-message').classList.remove('d-none');
+                document.getElementById('loading').classList.add('d-none');
+            }
+
+            loadMostViewed();
+        }
+
+        async function loadLatestPost() {
+            try {
+                const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(1));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    const doc = querySnapshot.docs[0];
+                    renderPost(doc.data());
+
+                    // Update URL without reload
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + doc.id;
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                } else {
+                    document.getElementById('error-message').classList.remove('d-none');
+                    document.getElementById('loading').classList.add('d-none');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            loadMostViewed();
+        }
+
+        function renderPost(post) {
+            document.getElementById('loading').classList.add('d-none');
+            document.getElementById('content-wrapper').classList.remove('d-none');
+
+            document.title = post.title + " - Dulux News";
+            document.getElementById('post-title').textContent = post.title;
+
+            // Generate Sapo (First paragraph or first 150 chars)
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.content;
+            const textContent = tempDiv.textContent || tempDiv.innerText || "";
+            document.getElementById('post-sapo').textContent = "(Dulux News) - " + textContent.substring(0, 200) + "...";
+
+            document.getElementById('post-date').textContent = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleString('vi-VN', { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Vừa xong';
+            document.getElementById('post-author').textContent = post.authorName || "Ban Biên Tập";
+
+            // Content
+            document.getElementById('post-content').innerHTML = post.content;
+
+            // If post has an image and it's not in the content, maybe add it? 
+            // Usually TinyMCE content already has images.
+        }
+
+        async function loadMostViewed() {
+            const list = document.getElementById('most-viewed-list');
+            try {
+                // Just get 5 random/latest posts for "Most Viewed" simulation
+                const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(5));
+                const querySnapshot = await getDocs(q);
+
+                let index = 1;
+                querySnapshot.forEach((doc) => {
+                    const p = doc.data();
+                    const color = index === 1 ? '#b30000' : (index === 2 ? '#d65a18' : (index === 3 ? '#d69e18' : '#ddd'));
+
+                    list.innerHTML += `
+                        <div class="most-viewed-item">
+                            <div class="most-viewed-number" style="color: ${color}">${index}</div>
+                            <div class="most-viewed-title">
+                                <a href="?id=${doc.id}">${p.title}</a>
+                            </div>
+                        </div>
+                    `;
+                    index++;
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        loadPost();
+    </script>
+
+</body>
+
+</html>

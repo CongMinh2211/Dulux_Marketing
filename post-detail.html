@@ -36,10 +36,15 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
+                        <ol class="breadcrumb justify-content-center mb-2">
                             <li class="breadcrumb-item"><a href="community.html">Bài viết</a></li>
                             <li class="breadcrumb-item active" aria-current="page" id="breadcrumb-title">Chi tiết</li>
                         </ol>
+                        <div class="text-center mb-3">
+                            <a href="#" id="btn-view-newspaper" class="btn btn-sm btn-outline-danger rounded-pill">
+                                <i class="fas fa-newspaper me-1"></i> Xem giao diện Báo
+                            </a>
+                        </div>
                     </nav>
 
                     <h1 class="fw-bold mb-3 text-center" id="post-title" style="color: #003B73;">Tiêu đề bài viết</h1>
@@ -176,6 +181,13 @@
             document.getElementById('post-author').textContent = post.authorName || "Ẩn danh";
             document.getElementById('post-date').textContent = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('vi-VN') : 'Vừa xong';
             document.getElementById('post-body').innerHTML = post.content;
+
+            // Set Newspaper View Link
+            const btnViewNewspaper = document.getElementById('btn-view-newspaper');
+            if (btnViewNewspaper) {
+                // Nếu bạn deploy trang báo ở domain khác, hãy sửa đường dẫn này (ví dụ: https://trang-bao-cua-ban.com/?id=...)
+                btnViewNewspaper.href = `news/index.html?id=${post.id}`;
+            }
 
             const imgEl = document.getElementById('post-image');
             if (post.image) {
