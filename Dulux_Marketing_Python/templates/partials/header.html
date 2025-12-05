@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180" alt="Dulux Logo"
+                style="height: 50px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' else '' }}"
+                        href="{{ url_for('home') }}">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'about' else '' }}"
+                        href="{{ url_for('about') }}">Giới thiệu</a></li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'products' else '' }}"
+                        href="{{ url_for('products') }}">Sản phẩm</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ 'active' if request.endpoint == 'ideas' else '' }}"
+                        href="{{ url_for('ideas') }}" id="ideasDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Ý tưởng
+                    </a>
+                    <ul class="dropdown-menu border-0 shadow-sm rounded-3" aria-labelledby="ideasDropdown">
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Hành lang') }}">Hành
+                                lang</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Nhà bếp') }}">Nhà bếp</a>
+                        </li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Nhà văn phòng') }}">Nhà
+                                văn phòng</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Phòng khách') }}">Phòng
+                                khách</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Phòng ngủ') }}">Phòng
+                                ngủ</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Phòng trẻ em') }}">Phòng
+                                trẻ em</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Phòng tắm') }}">Phòng
+                                tắm</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ url_for('ideas', location='Phòng ăn') }}">Phòng
+                                ăn</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item py-2 fw-bold" href="{{ url_for('ideas') }}">Tất cả</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'tool' else '' }}"
+                        href="{{ url_for('tool') }}">Tìm kiếm màu sắc </a></li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'community' else '' }}"
+                        href="{{ url_for('community') }}">Bài viết</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">PR Online</a></li>
+
+                <!-- Auth Items -->
+                <li class="nav-item ms-lg-3 d-flex align-items-center">
+                    <!-- Login Button (Visible when logged out) -->
+                    <a id="nav-btn-login" href="{{ url_for('login') }}"
+                        class="btn btn-outline-primary rounded-pill btn-sm">
+                        <i class="fas fa-user me-2"></i>Đăng Nhập
+                    </a>
+
+                    <!-- User Profile Dropdown (Visible when logged in) -->
+                    <div id="nav-user-profile" class="dropdown d-none">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar me-2" id="nav-avatar"
+                                style="width: 35px; height: 35px; font-size: 0.9rem; background-color: #00A9CE; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">
+                                U</div>
+                            <span class="fw-bold text-dark small me-2" id="nav-username">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
+                            <li><a class="dropdown-item py-2" href="#" onclick="alert('Tính năng đang phát triển')"><i
+                                        class="fas fa-address-card me-2 text-primary"></i>Thêm thông tin</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('change_password') }}"><i
+                                        class="fas fa-key me-2 text-warning"></i>Đổi mật khẩu</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item py-2 text-danger" href="#" id="nav-btn-logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item ms-lg-3"><a href="{{ url_for('products') }}" class="btn btn-primary-custom">Mua
+                        Ngay</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="dulux-flourish"></div>

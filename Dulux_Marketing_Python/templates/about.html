@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dulux - Giới Thiệu</title>
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    {% include 'partials/header.html' %}
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Về Dulux</h1>
+            <p class="hero-subtitle">Hành trình tô điểm cuộc sống bằng sắc màu</p>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-title mb-4">
+                        <h5 class="text-primary text-uppercase letter-spacing-2">Câu Chuyện Của Chúng Tôi</h5>
+                        <h2>Sứ Mệnh & Tầm Nhìn</h2>
+                    </div>
+                    <p class="lead text-muted mb-4">Chúng tôi không chỉ bán sơn, chúng tôi bán niềm cảm hứng và sự đổi
+                        mới cho không gian sống của bạn.</p>
+                    <p>Dulux cam kết mang đến những giải pháp màu sắc sáng tạo và bền vững nhất. Chúng tôi tin rằng màu
+                        sắc có sức mạnh thay đổi không gian, cảm xúc và cuộc sống của con người. Từ những ngôi nhà nhỏ
+                        ấm cúng đến những công trình kiến trúc vĩ đại, Dulux luôn đồng hành để tạo nên vẻ đẹp trường
+                        tồn.</p>
+
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <h2 class="display-4 fw-bold text-primary">90+</h2>
+                            <p class="text-muted">Năm Kinh Nghiệm</p>
+                        </div>
+                        <div class="col-6">
+                            <h2 class="display-4 fw-bold text-primary">50+</h2>
+                            <p class="text-muted">Quốc Gia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <img src="https://cdn.mos.cms.futurecdn.net/wurJjJzCjF7dupz223QFC.jpg"
+                                class="img-fluid rounded-4 shadow mb-3" alt="About 1">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.-TT9LSnfT6LrV7KVu6pW8QHaDX?pid=Api&P=0&h=180"
+                                class="img-fluid rounded-4 shadow" alt="About 2">
+                        </div>
+                        <div class="col-6 mt-5">
+                            <img src="https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                class="img-fluid rounded-4 shadow mb-3" alt="About 3">
+                            <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                class="img-fluid rounded-4 shadow" alt="About 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="bg-light-custom py-5">
+        <div class="container">
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>Giá Trị Cốt Lõi</h2>
+                <p class="text-muted">Những nguyên tắc định hình nên thương hiệu Dulux</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h4>Chất Lượng</h4>
+                        <p class="text-muted small">Cam kết tiêu chuẩn quốc tế trong từng giọt sơn.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4>Bền Vững</h4>
+                        <p class="text-muted small">Thân thiện với môi trường và sức khỏe người dùng.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4>Sáng Tạo</h4>
+                        <p class="text-muted small">Luôn đổi mới công nghệ và xu hướng màu sắc.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Cộng Đồng</h4>
+                        <p class="text-muted small">Đóng góp tích cực vào sự phát triển xã hội.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (New) -->
+    <section class="py-5">
+        <div class="container">
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>Hành Trình Màu Sắc</h2>
+                <p class="text-muted">Những dự án tiêu biểu và không gian đầy cảm hứng</p>
+            </div>
+            <div class="row g-4" data-masonry='{"percentPosition": true }'>
+                <div class="col-md-4 col-lg-4" data-aos="zoom-in">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Gallery 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Gallery 2">
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="gallery-item">
+                        <img src="https://images.akzonobel.com/akzonobel-flourish/dulux/uk/en/colour-of-the-year-2024/color-futures/sweet-embrace-colour-story/sweet-embrace-colour-story-bedroom-inspiration-global-9.jpg?impolicy=.auto%26imwidth%3D384&imwidth=588"
+                            alt="Gallery 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Gallery 4">
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Gallery 5">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1615529182904-14819c35db37?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Gallery 6">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Timeline -->
+    <section class="bg-light-custom py-5">
+        <div class="container">
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>Chiến Lược Phát Triển</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-container timeline-left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <h4>Giai Đoạn 1: Nhận Diện</h4>
+                        <p>Xây dựng thương hiệu mạnh mẽ trên các nền tảng số. Tăng cường hiện diện trên mạng xã hội và
+                            các kênh truyền thông.</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-right" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <h4>Giai Đoạn 2: Lan Tỏa</h4>
+                        <p>Tạo các chiến dịch Viral Marketing. Khuyến khích người dùng chia sẻ không gian sống của họ
+                            với Dulux.</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <h4>Giai Đoạn 3: Chuyển Đổi</h4>
+                        <p>Tối ưu hóa trải nghiệm mua sắm. Tích hợp công cụ phối màu và tính sơn để thúc đẩy quyết định
+                            mua hàng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    {% include 'partials/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Masonry JS (Optional if using CSS grid, but good for uneven layouts) -->
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
