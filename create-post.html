@@ -9,7 +9,7 @@
         type='image/x-icon'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -40,6 +40,10 @@
                                 từ Word (.docx)</label>
                             <input type="file" class="form-control" id="word-upload" accept=".docx">
                             <div class="form-text">Nội dung file Word sẽ được tự động điền vào ô nội dung bên dưới.
+                                <strong>Giới hạn: 10MB</strong>
+                            </div>
+                            <div id="upload-status" class="mt-2 text-primary small fw-bold"
+                                style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 5px;">
                             </div>
                         </div>
 
@@ -77,8 +81,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
-
         const firebaseConfig = {
             apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
             authDomain: "dulux-marketing.firebaseapp.com",
@@ -92,7 +94,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
+        // Storage không được sử dụng - ảnh sẽ được nhúng trực tiếp vào bài viết
 
         // Check for Edit Mode
         const urlParams = new URLSearchParams(window.location.search);
@@ -129,68 +131,450 @@
         // Auth Check
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                alert("Vui lòng đăng nhập để đăng bài viết.");
-                window.location.href = "login.html";
+                // alert("Vui lòng đăng nhập để đăng bài viết.");
+                // window.location.href = "login.html";
             }
         });
+
+        // Helper to log status
+        function logStatus(message, isError = false) {
+            const statusDiv = document.getElementById('upload-status');
+            if (!statusDiv) return;
+            const timestamp = new Date().toLocaleTimeString();
+            const color = isError ? 'text-danger' : 'text-primary';
+            statusDiv.innerHTML += `<div class="${color}">[${timestamp}] ${message}</div>`;
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+
+        // Image Compression Helper (Optimized for Speed & Quality)
+        function compressImage(fileBlob) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const url = URL.createObjectURL(fileBlob);
+
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Optimized: Max width 1200px (Better quality, still fast)
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+
+                    // Maintain aspect ratio
+                    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                        const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+                        width = width * ratio;
+                        height = height * ratio;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    // Better quality rendering
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // WebP with 0.7 quality (Better balance between quality and size)
+                    canvas.toBlob((blob) => {
+                        URL.revokeObjectURL(url);
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            // Fallback to JPEG if WebP not supported
+                            canvas.toBlob((jpegBlob) => {
+                                URL.revokeObjectURL(url);
+                                if (jpegBlob) {
+                                    resolve(jpegBlob);
+                                } else {
+                                    reject(new Error("Compression failed"));
+                                }
+                            }, 'image/jpeg', 0.7);
+                        }
+                    }, 'image/webp', 0.7);
+                };
+
+                img.onerror = (err) => {
+                    URL.revokeObjectURL(url);
+                    reject(err);
+                };
+
+                img.src = url;
+            });
+        }
+
+        function handleError(err) {
+            console.error("Mammoth conversion error:", err);
+            console.error("Error stack:", err.stack);
+            const errorMsg = err.message || "Không thể chuyển đổi file Word";
+            logStatus(`❌ Lỗi Mammoth: ${errorMsg}`, true);
+
+            // More helpful error messages
+            let userMessage = "Lỗi khi đọc file Word: " + errorMsg + "\n\n";
+
+            if (errorMsg.includes("corrupt") || errorMsg.includes("invalid") || errorMsg.includes("not a valid")) {
+                userMessage += "File Word có vẻ bị hỏng hoặc không đúng định dạng.\n\nVui lòng:\n1. Mở file trong Microsoft Word và lưu lại (Save As -> .docx)\n2. Kiểm tra file có đúng định dạng .docx không\n3. Thử với file khác\n4. Kiểm tra file có bị password bảo vệ không";
+            } else if (errorMsg.includes("memory") || errorMsg.includes("size") || errorMsg.includes("too large")) {
+                userMessage += "File quá lớn để xử lý.\n\nVui lòng:\n1. Giảm số lượng ảnh trong file\n2. Nén ảnh trong Word trước khi lưu\n3. Chia nhỏ nội dung thành nhiều file\n4. Thử trình duyệt khác (Chrome/Firefox)\n5. Đóng các tab khác để giải phóng bộ nhớ";
+            } else if (errorMsg.includes("timeout") || errorMsg.includes("abort")) {
+                userMessage += "Quá trình xử lý bị gián đoạn.\n\nVui lòng:\n1. Thử lại với file nhỏ hơn\n2. Kiểm tra kết nối internet\n3. Đóng các tab khác\n4. Thử trình duyệt khác";
+            } else {
+                userMessage += "Vui lòng thử:\n1. Mở file trong Word và lưu lại\n2. Kiểm tra file có bị hỏng không\n3. Thử trình duyệt khác\n4. Giảm kích thước file";
+            }
+
+            alert(userMessage);
+            const contentArea = document.getElementById('post-content');
+            if (contentArea) {
+                contentArea.value = "Đã xảy ra lỗi: " + errorMsg + "\n\nVui lòng thử lại hoặc liên hệ hỗ trợ.";
+                contentArea.disabled = false;
+            }
+        }
+
+        function displayResult(result) {
+            const contentArea = document.getElementById('post-content');
+            if (!contentArea) {
+                logStatus("❌ Không tìm thấy ô nhập nội dung!", true);
+                return;
+            }
+
+            if (!result || !result.value) {
+                logStatus("⚠️ Kết quả chuyển đổi rỗng!", true);
+                contentArea.value = "Không có nội dung được tìm thấy trong file Word.";
+                return;
+            }
+
+            // Clean up HTML if needed
+            let htmlContent = result.value;
+
+            // Remove empty paragraphs
+            htmlContent = htmlContent.replace(/<p><\/p>/g, '');
+            htmlContent = htmlContent.replace(/<p>\s*<\/p>/g, '');
+
+            // Set content
+            contentArea.value = htmlContent;
+
+            // Log content size
+            const contentSize = new Blob([htmlContent]).size;
+            logStatus(`📝 Nội dung đã chuyển đổi: ${(contentSize / 1024).toFixed(2)} KB`);
+
+            if (result.messages && result.messages.length > 0) {
+                console.log("Mammoth messages:", result.messages);
+                // Messages are already logged in the conversion promise
+            }
+        }
 
         // Handle Word Upload
         document.getElementById('word-upload').addEventListener('change', function (event) {
             const file = this.files[0];
-            if (!file) return;
+            if (!file) {
+                logStatus("Không có file được chọn.", true);
+                return;
+            }
+
+            // Clear previous status
+            const statusDiv = document.getElementById('upload-status');
+            if (statusDiv) statusDiv.innerHTML = "";
+
+            console.log("File selected:", {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                lastModified: new Date(file.lastModified)
+            });
+
+            // File size validation (10MB = 10 * 1024 * 1024 bytes)
+            const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+            if (file.size > MAX_FILE_SIZE) {
+                const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+                logStatus(`Lỗi: File quá lớn (${fileSizeMB} MB). Giới hạn tối đa là 10MB.`, true);
+                alert(`File quá lớn! Kích thước: ${fileSizeMB} MB\nGiới hạn tối đa: 10 MB`);
+                this.value = ''; // Clear the input
+                return;
+            }
+
+            // Check file type
+            const validExtensions = ['.docx'];
+            const fileName = file.name.toLowerCase();
+            const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+            const isValidMimeType = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                file.type === 'application/zip' ||
+                file.type === '';
+
+            if (!isValidExtension && !isValidMimeType) {
+                logStatus(`Lỗi: Chỉ chấp nhận file .docx`, true);
+                alert(`Vui lòng chọn file Word (.docx)\n\nFile hiện tại: ${file.name}\nLoại file: ${file.type || 'Không xác định'}`);
+                this.value = '';
+                return;
+            }
+
+            // Check Auth (không bắt buộc cho việc nhúng ảnh)
+            const user = auth.currentUser;
+            if (user) {
+                logStatus(`✅ Người dùng: ${user.email || 'Ẩn danh'} (UID: ${user.uid.substring(0, 8)}...)`);
+            } else {
+                logStatus("ℹ️ Bạn chưa đăng nhập - Ảnh vẫn sẽ được nhúng vào bài viết");
+            }
+
+            logStatus(`📄 Bắt đầu xử lý file: ${file.name}`);
+            logStatus(`📊 Kích thước: ${(file.size / 1024 / 1024).toFixed(2)} MB (${(file.size / 1024).toFixed(0)} KB)`);
 
             // Show loading state
             const contentArea = document.getElementById('post-content');
             const originalPlaceholder = contentArea.placeholder;
-            contentArea.placeholder = "Đang xử lý file Word và tải ảnh lên... Vui lòng đợi...";
+            contentArea.value = "Đang khởi động bộ xử lý...";
             contentArea.disabled = true;
 
             var reader = new FileReader();
+            let readStartTime = Date.now();
+            let readTimeoutId = null;
+
+            // Add progress handler
+            reader.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percentLoaded = Math.round((e.loaded / e.total) * 100);
+                    const elapsed = ((Date.now() - readStartTime) / 1000).toFixed(1);
+                    const speed = e.loaded / (Date.now() - readStartTime) * 1000; // bytes per second
+                    logStatus(`📥 Đang đọc file: ${percentLoaded}% (${(e.loaded / 1024 / 1024).toFixed(2)} MB / ${(e.total / 1024 / 1024).toFixed(2)} MB) - ${(speed / 1024 / 1024).toFixed(2)} MB/s - ${elapsed}s`);
+                }
+            };
+
             reader.onload = function (event) {
+                if (readTimeoutId) {
+                    clearTimeout(readTimeoutId);
+                    readTimeoutId = null;
+                }
+
+                const readTime = ((Date.now() - readStartTime) / 1000).toFixed(1);
+                logStatus(`✅ Đã đọc xong file từ máy tính (${readTime}s). Đang chuyển đổi...`);
+
                 const arrayBuffer = event.target.result;
+                if (!arrayBuffer || arrayBuffer.byteLength === 0) {
+                    logStatus("❌ Lỗi: File đọc được nhưng rỗng!", true);
+                    alert("File đọc được nhưng không có dữ liệu. Vui lòng kiểm tra file có bị hỏng không.");
+                    contentArea.disabled = false;
+                    contentArea.value = "";
+                    contentArea.placeholder = originalPlaceholder;
+                    return;
+                }
+
+                logStatus(`📦 Dữ liệu đã đọc: ${(arrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB`);
+
+                let imageCount = 0;
+                let uploadedCount = 0;
+                const startTime = Date.now();
 
                 const options = {
                     convertImage: mammoth.images.imgElement(function (image) {
+                        imageCount++;
+                        const currentImageIndex = imageCount;
+                        const imageStartTime = Date.now();
+
+                        if (imageCount === 1) {
+                            logStatus(`📊 Phát hiện ảnh trong file - Sẽ nén và nhúng trực tiếp vào bài viết!`);
+                        }
+
+                        // Return promise immediately - Mammoth will handle it (PARALLEL processing)
                         return image.read().then(async function (imageBuffer) {
                             try {
-                                const blob = new Blob([imageBuffer], { type: image.contentType });
-                                const filename = `post_images/${Date.now()}_${Math.random().toString(36).substring(7)}.png`;
-                                const storageRef = ref(storage, filename);
+                                logStatus(`🖼️ Ảnh #${currentImageIndex}: Bắt đầu xử lý...`);
 
-                                await uploadBytes(storageRef, blob);
-                                const url = await getDownloadURL(storageRef);
-                                return { src: url };
+                                // Optimize Image
+                                const blob = new Blob([imageBuffer], { type: image.contentType });
+                                const originalSizeKB = (blob.size / 1024).toFixed(2);
+
+                                const compressedBlob = await compressImage(blob);
+                                const compressedSizeKB = (compressedBlob.size / 1024).toFixed(2);
+                                const compressionRatio = ((1 - compressedBlob.size / blob.size) * 100).toFixed(1);
+
+                                logStatus(`📦 Ảnh #${currentImageIndex}: ${originalSizeKB}KB → ${compressedSizeKB}KB (Giảm ${compressionRatio}%)`);
+
+                                // Convert to Base64 and embed directly
+                                logStatus(`🔗 Ảnh #${currentImageIndex}: Đang nhúng vào bài viết...`);
+
+                                const base64String = await new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        const base64 = reader.result;
+                                        resolve(base64);
+                                    };
+                                    reader.onerror = reject;
+                                    reader.readAsDataURL(compressedBlob);
+                                });
+
+                                const processTime = ((Date.now() - imageStartTime) / 1000).toFixed(1);
+                                uploadedCount++;
+                                logStatus(`✅ Ảnh #${currentImageIndex}/${imageCount}: Đã nén & nhúng thành công! (${processTime}s) [${uploadedCount}/${imageCount}]`);
+
+                                return { src: base64String };
                             } catch (error) {
-                                console.error("Error uploading image:", error);
-                                throw error;
+                                console.error(`Error processing image #${currentImageIndex}:`, error);
+                                logStatus(`❌ Lỗi xử lý ảnh #${currentImageIndex}: ${error.message}`, true);
+                                
+                                // Return placeholder so the text still loads
+                                return { src: "https://via.placeholder.com/800x400?text=Image+Error" };
                             }
+                        }).catch(error => {
+                            console.error(`Error in image promise #${currentImageIndex}:`, error);
+                            logStatus(`❌ Lỗi xử lý ảnh #${currentImageIndex}: ${error.message}`, true);
+                            return { src: "https://via.placeholder.com/800x400?text=Error" };
                         });
                     })
                 };
 
+                contentArea.value = "Đang đọc nội dung văn bản và xử lý ảnh song song...";
+
+                // Convert to HTML - Mammoth handles image promises in parallel automatically
+                logStatus("🔄 Đang chuyển đổi Word sang HTML...");
+
+                // Add timeout for conversion (90 seconds)
+                const conversionTimeout = setTimeout(() => {
+                    logStatus("⏱️ Quá trình chuyển đổi đang mất nhiều thời gian (>90s)...", true);
+                }, 90000);
+
                 mammoth.convertToHtml({ arrayBuffer: arrayBuffer }, options)
-                    .then(displayResult)
-                    .catch(handleError)
+                    .then(function (result) {
+                        clearTimeout(conversionTimeout);
+                        const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+
+                        if (!result || !result.value) {
+                            logStatus("⚠️ Kết quả chuyển đổi rỗng!", true);
+                            alert("Chuyển đổi file thành công nhưng không có nội dung.\n\nCó thể file Word không có nội dung văn bản.");
+                            contentArea.value = "";
+                            contentArea.disabled = false;
+                            contentArea.placeholder = originalPlaceholder;
+                            return;
+                        }
+
+                        if (imageCount > 0) {
+                            logStatus(`🎉 Hoàn thành! Đã nén & nhúng ${imageCount} ảnh trong ${totalTime}s (Trung bình ${(totalTime / imageCount).toFixed(1)}s/ảnh)`);
+                            logStatus(`✅ Tất cả ảnh đã được nhúng trực tiếp vào bài viết!`);
+                        } else {
+                            logStatus(`🎉 Hoàn thành! Tổng thời gian: ${totalTime}s`);
+                        }
+
+                        if (result.messages && result.messages.length > 0) {
+                            console.log("Mammoth messages:", result.messages);
+                            result.messages.forEach(msg => {
+                                if (msg.type === 'warning') {
+                                    logStatus(`⚠️ ${msg.message}`, true);
+                                } else {
+                                    logStatus(`ℹ️ ${msg.message}`);
+                                }
+                            });
+                        }
+
+                        displayResult(result);
+                    })
+                    .catch(function (error) {
+                        clearTimeout(conversionTimeout);
+                        handleError(error);
+                    })
                     .finally(() => {
                         contentArea.disabled = false;
                         contentArea.placeholder = originalPlaceholder;
+                        logStatus("✨ Hoàn tất quy trình xử lý file!");
+                        document.getElementById('word-upload').value = '';
                     });
             };
-            reader.readAsArrayBuffer(file);
-        });
 
-        function displayResult(result) {
-            document.getElementById('post-content').value = result.value;
-            if (result.messages.length > 0) {
-                console.log("Mammoth messages:", result.messages);
+            reader.onerror = function (err) {
+                if (readTimeoutId) {
+                    clearTimeout(readTimeoutId);
+                    readTimeoutId = null;
+                }
+
+                console.error("FileReader error:", err);
+                console.error("Error details:", {
+                    error: err,
+                    target: err.target,
+                    targetError: err.target?.error,
+                    errorCode: err.target?.error?.code,
+                    errorMessage: err.target?.error?.message
+                });
+
+                const error = err.target?.error || err;
+                const errorMsg = error?.message || err.message || "Không thể đọc file";
+                const errorCode = error?.code;
+
+                logStatus(`❌ Lỗi đọc file: ${errorMsg}`, true);
+                logStatus(`🔍 Mã lỗi: ${errorCode || 'Không xác định'}`, true);
+
+                let alertMessage = `Lỗi đọc file: ${errorMsg}\n\n`;
+
+                if (errorCode !== undefined) {
+                    const NOT_FOUND_ERR = 1;
+                    const NOT_READABLE_ERR = 2;
+                    const ABORT_ERR = 3;
+                    const SECURITY_ERR = 18;
+
+                    if (errorCode === NOT_FOUND_ERR) {
+                        alertMessage = "Lỗi: Không tìm thấy file!\n\nVui lòng chọn lại file.";
+                    } else if (errorCode === NOT_READABLE_ERR) {
+                        alertMessage = "Lỗi: File không thể đọc được.\n\nCó thể:\n- File đang bị khóa bởi chương trình khác\n- File bị hỏng\n- Quyền truy cập bị từ chối\n\nVui lòng:\n1. Đóng Microsoft Word nếu đang mở file này\n2. Kiểm tra file có bị hỏng không\n3. Thử copy file sang vị trí khác và upload lại";
+                    } else if (errorCode === ABORT_ERR) {
+                        alertMessage = "Lỗi: Quá trình đọc file bị hủy.\n\nCó thể do:\n- File quá lớn\n- Trình duyệt hết bộ nhớ\n- Kết nối bị gián đoạn";
+                    } else if (errorCode === SECURITY_ERR) {
+                        alertMessage = "Lỗi bảo mật: Không thể đọc file.\n\nVui lòng kiểm tra cài đặt bảo mật của trình duyệt.";
+                    } else {
+                        alertMessage += `Mã lỗi: ${errorCode}\n\nVui lòng thử:\n1. Đóng và mở lại trình duyệt\n2. Thử trình duyệt khác (Chrome, Firefox, Edge)\n3. Giảm kích thước file nếu file > 5MB`;
+                    }
+                } else {
+                    alertMessage += `Vui lòng kiểm tra:\n- File có đúng định dạng .docx không?\n- File có bị hỏng không?\n- File có nhỏ hơn 10MB không?\n- Thử trình duyệt khác`;
+                }
+
+                alert(alertMessage);
+                contentArea.disabled = false;
+                contentArea.value = "";
+                contentArea.placeholder = originalPlaceholder;
+                document.getElementById('word-upload').value = '';
+            };
+
+            reader.onabort = function () {
+                if (readTimeoutId) {
+                    clearTimeout(readTimeoutId);
+                    readTimeoutId = null;
+                }
+                logStatus("⚠️ Quá trình đọc file bị hủy.", true);
+                contentArea.disabled = false;
+                contentArea.value = "";
+                contentArea.placeholder = originalPlaceholder;
+            };
+
+            // Read file with timeout protection (60 seconds for large files)
+            try {
+                logStatus("🚀 Bắt đầu đọc file vào bộ nhớ...");
+
+                // Set timeout for file reading (60 seconds)
+                readTimeoutId = setTimeout(() => {
+                    if (reader.readyState === FileReader.LOADING) {
+                        logStatus("⏱️ Đọc file đang mất quá nhiều thời gian (>60s)...", true);
+                        reader.abort();
+                        alert("Đọc file quá lâu (>60 giây).\n\nCó thể:\n- File quá lớn\n- Trình duyệt thiếu bộ nhớ\n- File bị hỏng\n\nVui lòng:\n1. Thử file nhỏ hơn\n2. Đóng các tab khác để giải phóng bộ nhớ\n3. Thử trình duyệt khác");
+                        contentArea.disabled = false;
+                        contentArea.value = "";
+                        contentArea.placeholder = originalPlaceholder;
+                        document.getElementById('word-upload').value = '';
+                    }
+                }, 60000); // 60 seconds timeout
+
+                reader.readAsArrayBuffer(file);
+                logStatus("⏳ Đang đọc file... Vui lòng đợi.");
+            } catch (error) {
+                if (readTimeoutId) {
+                    clearTimeout(readTimeoutId);
+                    readTimeoutId = null;
+                }
+                console.error("Error starting file read:", error);
+                logStatus(`❌ Lỗi khởi động đọc file: ${error.message}`, true);
+                alert(`Lỗi khởi động: ${error.message}\n\nVui lòng:\n1. Thử lại với file nhỏ hơn\n2. Kiểm tra file có bị hỏng không\n3. Thử trình duyệt khác (Chrome/Firefox/Edge)\n4. Đóng các tab khác để giải phóng bộ nhớ`);
+                contentArea.disabled = false;
+                contentArea.value = "";
+                contentArea.placeholder = originalPlaceholder;
+                document.getElementById('word-upload').value = '';
             }
-        }
-
-        function handleError(err) {
-            console.log(err);
-            alert("Lỗi khi đọc file Word: " + err.message);
-            document.getElementById('post-content').disabled = false;
-        }
+        });
 
         // Handle Form Submit
         document.getElementById('create-post-form').addEventListener('submit', async (e) => {
@@ -202,9 +586,46 @@
                 return;
             }
 
-            const title = document.getElementById('post-title').value;
-            const content = document.getElementById('post-content').value;
-            const image = document.getElementById('post-image').value;
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const image = document.getElementById('post-image').value.trim();
+
+            // Validation
+            if (!title) {
+                alert("Vui lòng nhập tiêu đề bài viết!");
+                return;
+            }
+
+            if (!content) {
+                alert("Vui lòng nhập nội dung bài viết!");
+                return;
+            }
+
+            // Validation: Check content size (Firestore limit is 1MB per field)
+            const contentSize = new Blob([content]).size;
+            console.log("Content size:", contentSize, "bytes (", (contentSize / 1024).toFixed(2), "KB)");
+
+            // Count Base64 images (ảnh được nhúng trực tiếp)
+            const base64ImageMatches = content.match(/src="data:image[^"]+"/g);
+            const imageCount = base64ImageMatches ? base64ImageMatches.length : 0;
+
+            if (imageCount > 0) {
+                console.log(`Bài viết chứa ${imageCount} ảnh đã được nhúng trực tiếp (Base64)`);
+                logStatus(`📊 Bài viết chứa ${imageCount} ảnh đã được nhúng`);
+            }
+
+            // Firestore has 1MB limit per field
+            // Ảnh được nén và nhúng trực tiếp, nên cần kiểm tra kích thước tổng
+            if (contentSize > 1000000) { // 1MB limit
+                alert(`❌ Nội dung bài viết quá lớn (${(contentSize / 1024 / 1024).toFixed(2)} MB). Giới hạn Firestore là 1MB.\n\nVui lòng:\n1. Giảm số lượng ảnh trong file Word\n2. Giảm kích thước ảnh trong Word trước khi lưu\n3. Giảm số lượng văn bản trong bài viết\n\nẢnh đã được nén tối đa nhưng vẫn có thể quá lớn nếu có quá nhiều ảnh.`);
+                return;
+            }
+
+            // Disable submit button and show loading
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...';
 
             try {
                 if (postId) {
@@ -215,7 +636,7 @@
                         image: image,
                         updatedAt: serverTimestamp()
                     });
-                    alert("Cập nhật bài viết thành công!");
+                    alert("✅ Cập nhật bài viết thành công!");
                 } else {
                     // Create
                     await addDoc(collection(db, "posts"), {
@@ -228,17 +649,28 @@
                         likes: 0,
                         comments: []
                     });
-                    alert("Đăng bài viết thành công!");
+                    alert(`✅ Đăng bài viết thành công!${imageCount > 0 ? `\n\nBài viết chứa ${imageCount} ảnh đã được upload.` : ''}`);
                 }
                 window.location.href = "community.html";
             } catch (error) {
                 console.error("Error adding/updating document: ", error);
-                alert("Có lỗi xảy ra: " + error.message);
+
+                let errorMessage = "Có lỗi xảy ra: " + error.message;
+                if (error.code === 'permission-denied') {
+                    errorMessage = "Lỗi quyền truy cập! Vui lòng kiểm tra Firestore Rules.";
+                } else if (error.code === 'unavailable') {
+                    errorMessage = "Lỗi kết nối! Vui lòng kiểm tra kết nối internet.";
+                }
+
+                alert(errorMessage);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             }
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="aos.js"></script>
     <script src="script.js"></script>
 </body>
 
