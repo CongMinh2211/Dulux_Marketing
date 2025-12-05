@@ -1,0 +1,14 @@
+{
+    "builds": [
+        {
+            "src": "Dulux_Marketing_Python/app.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "Dulux_Marketing_Python/app.py"
+        }
+    ]
+}
