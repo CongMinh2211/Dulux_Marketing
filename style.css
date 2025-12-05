@@ -1296,6 +1296,7 @@ footer i {
     background: var(--dulux-blue);
     color: white;
 }
+
 .pr-edit-btn {
     position: absolute;
     top: 10px;
@@ -1320,3 +1321,30 @@ footer i {
     transform: scale(1.1);
 }
 
+
+/* =========================================
+   19. IDEAS PAGE STYLES
+   ========================================= */
+.idea-color-filter {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.idea-color-filter:hover {
+    transform: scale(1.2);
+    z-index: 10;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.idea-color-filter.active-filter {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px var(--dulux-blue);
+    z-index: 10;
+}
+
+/* Ensure dropdown menu on hover for desktop if needed, 
+   but Bootstrap default is click. Keeping click for consistency. */

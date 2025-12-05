@@ -179,6 +179,23 @@ function loadHeader() {
                     <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="ideas.html" id="ideasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ý tưởng
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm rounded-3" aria-labelledby="ideasDropdown">
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Hành lang">Hành lang</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Nhà bếp">Nhà bếp</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Nhà văn phòng">Nhà văn phòng</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Phòng khách">Phòng khách</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Phòng ngủ">Phòng ngủ</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Phòng trẻ em">Phòng trẻ em</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Phòng tắm">Phòng tắm</a></li>
+                            <li><a class="dropdown-item py-2" href="ideas.html?location=Phòng ăn">Phòng ăn</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2 fw-bold" href="ideas.html">Tất cả</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="tool.html">Tìm kiếm màu sắc </a></li>
                     <li class="nav-item"><a class="nav-link" href="community.html">Bài viết</a></li>
                     <li class="nav-item"><a class="nav-link" href="pr.html">PR Online</a></li>
@@ -448,5 +465,210 @@ document.addEventListener('DOMContentLoaded', function () {
         inputs.forEach(input => {
             input.addEventListener('change', filterProducts);
         });
+    }
+});
+
+/* =========================================
+   IDEAS PAGE LOGIC
+   ========================================= */
+
+const ideasData = [
+    {
+        id: 1,
+        title: "Thêm nét sang trọng cùng màu xanh nhạt",
+        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "blue",
+        location: "Hành lang",
+        description: "Màu xanh nhạt mang lại cảm giác rộng rãi và thoáng đãng cho hành lang."
+    },
+    {
+        id: 2,
+        title: "Chào đón khách với gam màu trung tính ấm",
+        image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "brown",
+        location: "Hành lang",
+        description: "Tạo ấn tượng đầu tiên ấm áp và thân thiện."
+    },
+    {
+        id: 3,
+        title: "Lời chào ấm áp với màu vàng rực nắng",
+        image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "yellow",
+        location: "Hành lang",
+        description: "Mang ánh nắng vào nhà với sắc vàng tươi vui."
+    },
+    {
+        id: 4,
+        title: "Ý tưởng mới lạ cho trang trí hành lang",
+        image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "pink",
+        location: "Hành lang",
+        description: "Phá cách với sự kết hợp màu sắc độc đáo."
+    },
+    {
+        id: 5,
+        title: "Nắm bắt vẻ tinh tế của màu hồng phấn",
+        image: "https://tse4.mm.bing.net/th/id/OIP.MwOMDuy2bk1arKl4uCj1qgAAAA?pid=Api&P=0&h=180",
+        color: "pink",
+        location: "Phòng khách",
+        description: "Sự nhẹ nhàng và lãng mạn cho không gian sinh hoạt chung."
+    },
+    {
+        id: 6,
+        title: "Đi trước thời đại với màu hồng ngọt ngào và ghi lạnh",
+        image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "grey",
+        location: "Phòng ngủ",
+        description: "Sự kết hợp hiện đại và đầy cá tính."
+    },
+    {
+        id: 7,
+        title: "Không gian bếp hiện đại với xanh lá",
+        image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "green",
+        location: "Nhà bếp",
+        description: "Mang thiên nhiên vào gian bếp của bạn."
+    },
+    {
+        id: 8,
+        title: "Phòng làm việc tập trung với màu xanh dương đậm",
+        image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "blue",
+        location: "Nhà văn phòng",
+        description: "Tăng cường sự tập trung và hiệu quả làm việc."
+    },
+    {
+        id: 9,
+        title: "Phòng trẻ em năng động với đa sắc màu",
+        image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        color: "orange",
+        location: "Phòng trẻ em",
+        description: "Kích thích sự sáng tạo và vui tươi cho bé."
+    },
+    {
+        id: 10,
+        title: "Thư giãn trong không gian spa tại gia",
+        image: "https://tse3.mm.bing.net/th/id/OIP.R26VWDVU_L5jmJIDmgULrwHaFc?pid=Api&P=0&h=180",
+        color: "blue",
+        location: "Phòng tắm",
+        description: "Tận hưởng cảm giác thư thái như ở spa ngay trong chính ngôi nhà của bạn."
+    },
+    {
+        id: 11,
+        title: "Phòng tắm hiện đại và tiện nghi",
+        image: "https://tse2.mm.bing.net/th/id/OIP.zVdEnlmjLzPeNXrYhnBOuwAAAA?pid=Api&P=0&h=180",
+        color: "grey",
+        location: "Phòng tắm",
+        description: "Thiết kế tối giản, hiện đại mang lại sự tiện nghi tối đa."
+    },
+    {
+        id: 12,
+        title: "Bữa ăn ấm cúng bên gia đình",
+        image: "https://tse1.mm.bing.net/th/id/OIP.zFnWwYOzxK7N3SrWl4ztdAHaE8?pid=Api&P=0&h=180",
+        color: "orange",
+        location: "Phòng ăn",
+        description: "Màu sắc ấm áp giúp bữa ăn gia đình thêm phần ngon miệng và gắn kết."
+    },
+    {
+        id: 13,
+        title: "Không gian phòng ăn sang trọng",
+        image: "https://tse1.mm.bing.net/th/id/OIP.QnUjo5zCTL5n_Wr9qEGIPgHaHa?pid=Api&P=0&h=180",
+        color: "brown",
+        location: "Phòng ăn",
+        description: "Nâng tầm đẳng cấp cho không gian ẩm thực của bạn."
+    }
+];
+
+function renderIdeas(ideas) {
+    const grid = document.getElementById('ideas-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    if (ideas.length === 0) {
+        grid.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Không tìm thấy ý tưởng nào phù hợp.</p></div>';
+        return;
+    }
+
+    ideas.forEach(idea => {
+        const card = `
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="product-img-wrapper" style="height: 250px;">
+                        <img src="${idea.image}" class="card-img-top" alt="${idea.title}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 1.1rem;">${idea.title}</h5>
+                        <p class="card-text text-muted small">${idea.description}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge bg-light text-dark border">${idea.location}</span>
+                            <a href="#" class="text-primary small fw-bold text-decoration-none">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.innerHTML += card;
+    });
+}
+
+function filterIdeas() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let selectedLocation = urlParams.get('location') || 'all';
+    let selectedColor = 'all';
+
+    // Update Dropdown Text if URL param exists
+    if (selectedLocation !== 'all') {
+        const dropdownText = document.getElementById('selectedLocation');
+        if (dropdownText) dropdownText.innerText = selectedLocation;
+    }
+
+    // Filter Logic
+    const colorFilters = document.querySelectorAll('.idea-color-filter');
+    const locationFilters = document.querySelectorAll('.idea-location-filter');
+
+    // Color Click Event
+    colorFilters.forEach(filter => {
+        filter.addEventListener('click', function () {
+            // Remove active class from others
+            colorFilters.forEach(f => f.classList.remove('active-filter'));
+            this.classList.add('active-filter');
+
+            selectedColor = this.getAttribute('data-color');
+            applyFilter(selectedColor, selectedLocation);
+        });
+    });
+
+    // Location Click Event
+    locationFilters.forEach(filter => {
+        filter.addEventListener('click', function (e) {
+            e.preventDefault();
+            selectedLocation = this.getAttribute('data-location');
+
+            // Update Dropdown Text
+            const dropdownText = document.getElementById('selectedLocation');
+            if (dropdownText) dropdownText.innerText = selectedLocation === 'all' ? 'Tất cả' : selectedLocation;
+
+            applyFilter(selectedColor, selectedLocation);
+        });
+    });
+
+    // Initial Render
+    applyFilter(selectedColor, selectedLocation);
+}
+
+function applyFilter(color, location) {
+    const filtered = ideasData.filter(idea => {
+        const matchColor = color === 'all' || idea.color === color;
+        const matchLocation = location === 'all' || idea.location === location;
+        return matchColor && matchLocation;
+    });
+    renderIdeas(filtered);
+}
+
+// Initialize Ideas Page
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementById('ideas-grid')) {
+        filterIdeas();
     }
 });
