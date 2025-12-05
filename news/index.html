@@ -497,17 +497,36 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Helper: Create Slug
+        function createSlug(str) {
+            if (!str) return '';
+            str = str.toLowerCase();
+            str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            str = str.replace(/[đĐ]/g, "d");
+            str = str.replace(/([^0-9a-z-\s])/g, '');
+            str = str.replace(/(\s+)/g, '-');
+            str = str.replace(/^-+|-+$/g, '');
+            return str;
+        }
+
+        // Helper: Extract ID from Slug (assumes format: slug-id)
+        function getIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Check for new 'p' param first
+            const p = urlParams.get('p');
+            if (p) {
+                const parts = p.split('-');
+                return parts[parts.length - 1]; // Last part is ID
+            }
+            // Fallback to old 'id' param
+            return urlParams.get('id');
+        }
+
         // Load Post
         async function loadPost() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
+            const postId = getIdFromUrl();
 
             if (!postId) {
-                // If no ID, show a demo or error
-                // document.getElementById('error-message').classList.remove('d-none');
-                // document.getElementById('loading').classList.add('d-none');
-
-                // For demo purposes if no ID is passed, try to load the latest post
                 loadLatestPost();
                 return;
             }
@@ -517,7 +536,18 @@
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    renderPost(docSnap.data());
+                    const post = docSnap.data();
+                    renderPost(post);
+
+                    // Canonicalize URL: If accessed via ID or wrong slug, update to correct slug
+                    const correctSlug = `${createSlug(post.title)}-${docSnap.id}`;
+                    const currentP = new URLSearchParams(window.location.search).get('p');
+
+                    if (currentP !== correctSlug) {
+                        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + correctSlug;
+                        window.history.replaceState({ path: newUrl }, '', newUrl);
+                    }
+
                 } else {
                     document.getElementById('error-message').classList.remove('d-none');
                     document.getElementById('loading').classList.add('d-none');
@@ -537,10 +567,12 @@
                 const querySnapshot = await getDocs(q);
                 if (!querySnapshot.empty) {
                     const doc = querySnapshot.docs[0];
-                    renderPost(doc.data());
+                    const post = doc.data();
+                    renderPost(post);
 
-                    // Update URL without reload
-                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + doc.id;
+                    // Update URL
+                    const slug = createSlug(post.title);
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + slug + '-' + doc.id;
                     window.history.pushState({ path: newUrl }, '', newUrl);
                 } else {
                     document.getElementById('error-message').classList.remove('d-none');
@@ -570,9 +602,6 @@
 
             // Content
             document.getElementById('post-content').innerHTML = post.content;
-
-            // If post has an image and it's not in the content, maybe add it? 
-            // Usually TinyMCE content already has images.
         }
 
         async function loadMostViewed() {
@@ -586,12 +615,13 @@
                 querySnapshot.forEach((doc) => {
                     const p = doc.data();
                     const color = index === 1 ? '#b30000' : (index === 2 ? '#d65a18' : (index === 3 ? '#d69e18' : '#ddd'));
+                    const slug = createSlug(p.title);
 
                     list.innerHTML += `
                         <div class="most-viewed-item">
                             <div class="most-viewed-number" style="color: ${color}">${index}</div>
                             <div class="most-viewed-title">
-                                <a href="?id=${doc.id}">${p.title}</a>
+                                <a href="?p=${slug}-${doc.id}">${p.title}</a>
                             </div>
                         </div>
                     `;
