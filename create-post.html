@@ -50,7 +50,7 @@
                         <div class="mb-4">
                             <label for="post-content" class="form-label fw-bold">Nội dung bài viết</label>
                             <textarea class="form-control" id="post-content" rows="6"
-                                placeholder="Chia sẻ câu chuyện của bạn..." required></textarea>
+                                placeholder="Chia sẻ câu chuyện của bạn..."></textarea>
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold"><i class="fas fa-image me-1"></i>Link ảnh (URL)</label>
@@ -72,6 +72,46 @@
     </main>
 
     <div id="footer-placeholder"></div>
+
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#post-content',
+            plugins: 'image link lists media table help wordcount',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image | help',
+            height: 500,
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            /* and here's our custom image picker*/
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px } img { max-width: 100%; height: auto; }'
+        });
+    </script>
 
     <!-- Mammoth.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -116,7 +156,13 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     document.getElementById('post-title').value = data.title;
-                    document.getElementById('post-content').value = data.content;
+
+                    if (tinymce.get('post-content')) {
+                        tinymce.get('post-content').setContent(data.content);
+                    } else {
+                        document.getElementById('post-content').value = data.content;
+                    }
+
                     document.getElementById('post-image').value = data.image || '';
                 } else {
                     alert("Không tìm thấy bài viết!");
@@ -234,14 +280,18 @@
 
         function displayResult(result) {
             const contentArea = document.getElementById('post-content');
-            if (!contentArea) {
-                logStatus("❌ Không tìm thấy ô nhập nội dung!", true);
-                return;
-            }
+            // if (!contentArea) { // TinyMCE hides the textarea
+            //     logStatus("❌ Không tìm thấy ô nhập nội dung!", true);
+            //     return;
+            // }
 
             if (!result || !result.value) {
                 logStatus("⚠️ Kết quả chuyển đổi rỗng!", true);
-                contentArea.value = "Không có nội dung được tìm thấy trong file Word.";
+                if (tinymce.get('post-content')) {
+                    tinymce.get('post-content').setContent("Không có nội dung được tìm thấy trong file Word.");
+                } else {
+                    contentArea.value = "Không có nội dung được tìm thấy trong file Word.";
+                }
                 return;
             }
 
@@ -253,7 +303,11 @@
             htmlContent = htmlContent.replace(/<p>\s*<\/p>/g, '');
 
             // Set content
-            contentArea.value = htmlContent;
+            if (tinymce.get('post-content')) {
+                tinymce.get('post-content').setContent(htmlContent);
+            } else {
+                contentArea.value = htmlContent;
+            }
 
             // Log content size
             const contentSize = new Blob([htmlContent]).size;
@@ -322,9 +376,13 @@
 
             // Show loading state
             const contentArea = document.getElementById('post-content');
-            const originalPlaceholder = contentArea.placeholder;
-            contentArea.value = "Đang khởi động bộ xử lý...";
-            contentArea.disabled = true;
+            // const originalPlaceholder = contentArea.placeholder;
+            // contentArea.value = "Đang khởi động bộ xử lý...";
+            // contentArea.disabled = true;
+            if (tinymce.get('post-content')) {
+                tinymce.get('post-content').setContent("Đang xử lý file Word...");
+                tinymce.get('post-content').mode.set('readonly');
+            }
 
             var reader = new FileReader();
             let readStartTime = Date.now();
@@ -353,9 +411,10 @@
                 if (!arrayBuffer || arrayBuffer.byteLength === 0) {
                     logStatus("❌ Lỗi: File đọc được nhưng rỗng!", true);
                     alert("File đọc được nhưng không có dữ liệu. Vui lòng kiểm tra file có bị hỏng không.");
-                    contentArea.disabled = false;
-                    contentArea.value = "";
-                    contentArea.placeholder = originalPlaceholder;
+                    if (tinymce.get('post-content')) {
+                        tinymce.get('post-content').mode.set('design');
+                        tinymce.get('post-content').setContent("");
+                    }
                     return;
                 }
 
@@ -411,7 +470,7 @@
                             } catch (error) {
                                 console.error(`Error processing image #${currentImageIndex}:`, error);
                                 logStatus(`❌ Lỗi xử lý ảnh #${currentImageIndex}: ${error.message}`, true);
-                                
+
                                 // Return placeholder so the text still loads
                                 return { src: "https://via.placeholder.com/800x400?text=Image+Error" };
                             }
@@ -423,7 +482,7 @@
                     })
                 };
 
-                contentArea.value = "Đang đọc nội dung văn bản và xử lý ảnh song song...";
+                // contentArea.value = "Đang đọc nội dung văn bản và xử lý ảnh song song...";
 
                 // Convert to HTML - Mammoth handles image promises in parallel automatically
                 logStatus("🔄 Đang chuyển đổi Word sang HTML...");
@@ -441,9 +500,9 @@
                         if (!result || !result.value) {
                             logStatus("⚠️ Kết quả chuyển đổi rỗng!", true);
                             alert("Chuyển đổi file thành công nhưng không có nội dung.\n\nCó thể file Word không có nội dung văn bản.");
-                            contentArea.value = "";
-                            contentArea.disabled = false;
-                            contentArea.placeholder = originalPlaceholder;
+                            if (tinymce.get('post-content')) {
+                                tinymce.get('post-content').setContent("");
+                            }
                             return;
                         }
 
@@ -472,8 +531,9 @@
                         handleError(error);
                     })
                     .finally(() => {
-                        contentArea.disabled = false;
-                        contentArea.placeholder = originalPlaceholder;
+                        if (tinymce.get('post-content')) {
+                            tinymce.get('post-content').mode.set('design');
+                        }
                         logStatus("✨ Hoàn tất quy trình xử lý file!");
                         document.getElementById('word-upload').value = '';
                     });
@@ -486,48 +546,17 @@
                 }
 
                 console.error("FileReader error:", err);
-                console.error("Error details:", {
-                    error: err,
-                    target: err.target,
-                    targetError: err.target?.error,
-                    errorCode: err.target?.error?.code,
-                    errorMessage: err.target?.error?.message
-                });
 
                 const error = err.target?.error || err;
                 const errorMsg = error?.message || err.message || "Không thể đọc file";
-                const errorCode = error?.code;
 
                 logStatus(`❌ Lỗi đọc file: ${errorMsg}`, true);
-                logStatus(`🔍 Mã lỗi: ${errorCode || 'Không xác định'}`, true);
+                alert(`Lỗi đọc file: ${errorMsg}`);
 
-                let alertMessage = `Lỗi đọc file: ${errorMsg}\n\n`;
-
-                if (errorCode !== undefined) {
-                    const NOT_FOUND_ERR = 1;
-                    const NOT_READABLE_ERR = 2;
-                    const ABORT_ERR = 3;
-                    const SECURITY_ERR = 18;
-
-                    if (errorCode === NOT_FOUND_ERR) {
-                        alertMessage = "Lỗi: Không tìm thấy file!\n\nVui lòng chọn lại file.";
-                    } else if (errorCode === NOT_READABLE_ERR) {
-                        alertMessage = "Lỗi: File không thể đọc được.\n\nCó thể:\n- File đang bị khóa bởi chương trình khác\n- File bị hỏng\n- Quyền truy cập bị từ chối\n\nVui lòng:\n1. Đóng Microsoft Word nếu đang mở file này\n2. Kiểm tra file có bị hỏng không\n3. Thử copy file sang vị trí khác và upload lại";
-                    } else if (errorCode === ABORT_ERR) {
-                        alertMessage = "Lỗi: Quá trình đọc file bị hủy.\n\nCó thể do:\n- File quá lớn\n- Trình duyệt hết bộ nhớ\n- Kết nối bị gián đoạn";
-                    } else if (errorCode === SECURITY_ERR) {
-                        alertMessage = "Lỗi bảo mật: Không thể đọc file.\n\nVui lòng kiểm tra cài đặt bảo mật của trình duyệt.";
-                    } else {
-                        alertMessage += `Mã lỗi: ${errorCode}\n\nVui lòng thử:\n1. Đóng và mở lại trình duyệt\n2. Thử trình duyệt khác (Chrome, Firefox, Edge)\n3. Giảm kích thước file nếu file > 5MB`;
-                    }
-                } else {
-                    alertMessage += `Vui lòng kiểm tra:\n- File có đúng định dạng .docx không?\n- File có bị hỏng không?\n- File có nhỏ hơn 10MB không?\n- Thử trình duyệt khác`;
+                if (tinymce.get('post-content')) {
+                    tinymce.get('post-content').mode.set('design');
+                    tinymce.get('post-content').setContent("");
                 }
-
-                alert(alertMessage);
-                contentArea.disabled = false;
-                contentArea.value = "";
-                contentArea.placeholder = originalPlaceholder;
                 document.getElementById('word-upload').value = '';
             };
 
@@ -537,9 +566,10 @@
                     readTimeoutId = null;
                 }
                 logStatus("⚠️ Quá trình đọc file bị hủy.", true);
-                contentArea.disabled = false;
-                contentArea.value = "";
-                contentArea.placeholder = originalPlaceholder;
+                if (tinymce.get('post-content')) {
+                    tinymce.get('post-content').mode.set('design');
+                    tinymce.get('post-content').setContent("");
+                }
             };
 
             // Read file with timeout protection (60 seconds for large files)
@@ -551,10 +581,11 @@
                     if (reader.readyState === FileReader.LOADING) {
                         logStatus("⏱️ Đọc file đang mất quá nhiều thời gian (>60s)...", true);
                         reader.abort();
-                        alert("Đọc file quá lâu (>60 giây).\n\nCó thể:\n- File quá lớn\n- Trình duyệt thiếu bộ nhớ\n- File bị hỏng\n\nVui lòng:\n1. Thử file nhỏ hơn\n2. Đóng các tab khác để giải phóng bộ nhớ\n3. Thử trình duyệt khác");
-                        contentArea.disabled = false;
-                        contentArea.value = "";
-                        contentArea.placeholder = originalPlaceholder;
+                        alert("Đọc file quá lâu (>60 giây).");
+                        if (tinymce.get('post-content')) {
+                            tinymce.get('post-content').mode.set('design');
+                            tinymce.get('post-content').setContent("");
+                        }
                         document.getElementById('word-upload').value = '';
                     }
                 }, 60000); // 60 seconds timeout
@@ -568,10 +599,11 @@
                 }
                 console.error("Error starting file read:", error);
                 logStatus(`❌ Lỗi khởi động đọc file: ${error.message}`, true);
-                alert(`Lỗi khởi động: ${error.message}\n\nVui lòng:\n1. Thử lại với file nhỏ hơn\n2. Kiểm tra file có bị hỏng không\n3. Thử trình duyệt khác (Chrome/Firefox/Edge)\n4. Đóng các tab khác để giải phóng bộ nhớ`);
-                contentArea.disabled = false;
-                contentArea.value = "";
-                contentArea.placeholder = originalPlaceholder;
+                alert(`Lỗi khởi động: ${error.message}`);
+                if (tinymce.get('post-content')) {
+                    tinymce.get('post-content').mode.set('design');
+                    tinymce.get('post-content').setContent("");
+                }
                 document.getElementById('word-upload').value = '';
             }
         });
@@ -587,7 +619,8 @@
             }
 
             const title = document.getElementById('post-title').value.trim();
-            const content = document.getElementById('post-content').value.trim();
+            // const content = document.getElementById('post-content').value.trim();
+            const content = tinymce.get('post-content').getContent().trim();
             const image = document.getElementById('post-image').value.trim();
 
             // Validation
