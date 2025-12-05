@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Của Tôi - Dulux</title>
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: var(--gradient-primary);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: white;
+            color: var(--dulux-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 15px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'partials/header.html' %}
+
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="profile-card mb-5">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar">U</div>
+                        <h3 class="fw-bold" id="profile-name">Đang tải...</h3>
+                        <p class="mb-0 opacity-75" id="profile-email">...</p>
+                    </div>
+                    <div class="p-4 p-md-5">
+                        <h4 class="fw-bold text-primary mb-4"><i class="fas fa-user-edit me-2"></i>Cập Nhật Thông Tin
+                        </h4>
+
+                        <form id="profile-form">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Tên hiển thị</label>
+                                <input type="text" class="form-control rounded-pill" id="display-name"
+                                    placeholder="Nhập tên hiển thị của bạn">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Số điện thoại</label>
+                                    <input type="tel" class="form-control rounded-pill" id="phone-number"
+                                        placeholder="Nhập số điện thoại">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Ngày tham gia</label>
+                                    <input type="text" class="form-control rounded-pill bg-light" id="join-date"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Địa chỉ</label>
+                                <textarea class="form-control" id="address" rows="3"
+                                    placeholder="Nhập địa chỉ của bạn"></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" class="btn btn-primary-custom rounded-pill px-5">
+                                    <i class="fas fa-save me-2"></i>Lưu Thay Đổi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
+            authDomain: "dulux-marketing.firebaseapp.com",
+            projectId: "dulux-marketing",
+            storageBucket: "dulux-marketing.firebasestorage.app",
+            messagingSenderId: "1034530661104",
+            appId: "1:1034530661104:web:265368ed2606874ba89835",
+            measurementId: "G-K3B9M6XQXE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const profileForm = document.getElementById('profile-form');
+        const displayNameInput = document.getElementById('display-name');
+        const phoneInput = document.getElementById('phone-number');
+        const addressInput = document.getElementById('address');
+        const joinDateInput = document.getElementById('join-date');
+
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+        const profileAvatar = document.getElementById('profile-avatar');
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                // Update Header Info
+                profileName.textContent = user.displayName || "Chưa đặt tên";
+                profileEmail.textContent = user.email;
+                profileAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
+                joinDateInput.value = new Date(user.metadata.creationTime).toLocaleDateString('vi-VN');
+
+                // Fill Form with Auth Data
+                displayNameInput.value = user.displayName || "";
+
+                // Fetch Additional Data from Firestore
+                try {
+                    const docRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        phoneInput.value = data.phoneNumber || "";
+                        addressInput.value = data.address || "";
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+
+            } else {
+                window.location.href = "{{ url_for('login') }}";
+            }
+        });
+
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const newName = displayNameInput.value.trim();
+            const newPhone = phoneInput.value.trim();
+            const newAddress = addressInput.value.trim();
+
+            const submitBtn = profileForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...';
+
+            try {
+                // 1. Update Auth Profile (Display Name)
+                if (newName !== currentUser.displayName) {
+                    await updateProfile(currentUser, { displayName: newName });
+                    // Update UI immediately
+                    profileName.textContent = newName;
+                    profileAvatar.textContent = newName[0].toUpperCase();
+                }
+
+                // 2. Update Firestore (Phone, Address)
+                await setDoc(doc(db, "users", currentUser.uid), {
+                    email: currentUser.email,
+                    displayName: newName,
+                    phoneNumber: newPhone,
+                    address: newAddress,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+
+                showToast("✅ Cập nhật thông tin thành công!", 'success');
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                showToast("❌ Lỗi: " + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+    </script>
+</body>
+
+</html>

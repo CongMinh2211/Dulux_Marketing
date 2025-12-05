@@ -48,7 +48,8 @@
                         href="{{ url_for('tool') }}">Tìm kiếm màu sắc </a></li>
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'community' else '' }}"
                         href="{{ url_for('community') }}">Bài viết</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">PR Online</a></li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'pr' else '' }}"
+                        href="{{ url_for('pr') }}">PR Online</a></li>
 
                 <!-- Auth Items -->
                 <li class="nav-item ms-lg-3 d-flex align-items-center">
@@ -68,8 +69,8 @@
                             <span class="fw-bold text-dark small me-2" id="nav-username">User</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
-                            <li><a class="dropdown-item py-2" href="#" onclick="alert('Tính năng đang phát triển')"><i
-                                        class="fas fa-address-card me-2 text-primary"></i>Thêm thông tin</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('profile') }}"><i
+                                        class="fas fa-address-card me-2 text-primary"></i>Hồ sơ của tôi</a></li>
                             <li><a class="dropdown-item py-2" href="{{ url_for('change_password') }}"><i
                                         class="fas fa-key me-2 text-warning"></i>Đổi mật khẩu</a></li>
                             <li>

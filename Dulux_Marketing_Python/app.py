@@ -46,6 +46,16 @@ def create_post():
 def post_detail():
     return render_template('post-detail.html')
 
+@app.route('/bai-viet/<path:post_path>')
+def post_detail_slug(post_path):
+    # Extract ID from the end of the URL (slug-id)
+    # Assuming the ID is the last part after the last hyphen
+    try:
+        post_id = post_path.split('-')[-1]
+    except IndexError:
+        post_id = None
+    return render_template('post-detail.html', post_id=post_id)
+
 @app.route('/pr')
 def pr():
     return render_template('pr.html')
@@ -57,6 +67,10 @@ def create_pr():
 @app.route('/change-password')
 def change_password():
     return render_template('change-password.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

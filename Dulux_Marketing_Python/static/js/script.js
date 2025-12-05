@@ -242,13 +242,13 @@ function loadFooter() {
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h4 class="footer-title">DULUX NHÓM 6</h4>
+                    <h4 class="footer-title">DULUX MARKETING</h4>
                     <p>Giải pháp màu sắc hoàn hảo cho ngôi nhà của bạn.</p>
                 </div>
                 <div class="col-md-4 mb-4">
                     <h5 class="text-white mb-3">Liên Hệ</h5>
                     <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> [ĐỊA CHỈ]</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Lô B2-6-22 Nguyễn Tất Thành, phường Hòa Hiệp Nam, quận Liên Chiểu, Tp. Đà Nẵng</li>
                         <li><i class="fas fa-phone me-2"></i> 0123 456 789</li>
                     </ul>
                 </div>
@@ -672,3 +672,43 @@ document.addEventListener('DOMContentLoaded', function () {
         filterIdeas();
     }
 });
+
+// =========================================
+// TOAST NOTIFICATION LOGIC
+// =========================================
+function showToast(message, type = 'success') {
+    const toastEl = document.getElementById('liveToast');
+    const toastBody = document.getElementById('toast-message');
+    
+    if (toastEl && toastBody) {
+        // Set Message
+        toastBody.textContent = message;
+
+        // Set Color based on Type
+        toastEl.classList.remove('bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info');
+        
+        switch(type) {
+            case 'success':
+                toastEl.classList.add('bg-success');
+                break;
+            case 'error':
+                toastEl.classList.add('bg-danger');
+                break;
+            case 'warning':
+                toastEl.classList.add('bg-warning');
+                break;
+            case 'info':
+                toastEl.classList.add('bg-info');
+                break;
+            default:
+                toastEl.classList.add('bg-primary');
+        }
+
+        // Show Toast
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    } else {
+        console.warn('Toast container not found!');
+        alert(message); // Fallback
+    }
+}

@@ -22,18 +22,6 @@
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
     --shadow-hover: 0 20px 40px rgba(0, 94, 184, 0.15);
     --gradient-primary: linear-gradient(135deg, var(--dulux-blue), var(--dulux-teal));
-    --font-heading: 'Montserrat', sans-serif;
-}
-
-
-
-
-/* Global Styles */
-body {
-    font-family: 'Open Sans', sans-serif;
-    color: var(--text-dark);
-    line-height: 1.7;
-    padding-top: 100px;
     /* Prevent fixed navbar overlap */
 }
 
@@ -902,28 +890,6 @@ footer i {
     transition: transform 0.5s;
 }
 
-.team-card:hover .team-img img {
-    transform: scale(1.1);
-}
-
-/* =========================================
-   19. PRODUCT PAGE REFACTOR (Dulux Style)
-   ========================================= */
-/* Sidebar */
-.sidebar-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--dulux-dark-blue);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.filter-category {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 15px;
-}
 
 .filter-category h6 {
     font-weight: 700;

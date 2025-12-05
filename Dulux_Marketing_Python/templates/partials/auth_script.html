@@ -1,0 +1,48 @@
+<!-- Firebase SDKs & Auth Logic -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
+        authDomain: "dulux-marketing.firebaseapp.com",
+        projectId: "dulux-marketing",
+        storageBucket: "dulux-marketing.firebasestorage.app",
+        messagingSenderId: "1034530661104",
+        appId: "1:1034530661104:web:265368ed2606874ba89835",
+        measurementId: "G-K3B9M6XQXE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+        const navBtnLogin = document.getElementById('nav-btn-login');
+        const navUserProfile = document.getElementById('nav-user-profile');
+        const navAvatar = document.getElementById('nav-avatar');
+        const navUsername = document.getElementById('nav-username');
+        const navBtnLogout = document.getElementById('nav-btn-logout');
+
+        if (user) {
+            // User is signed in
+            if (navBtnLogin) navBtnLogin.classList.add('d-none');
+            if (navUserProfile) navUserProfile.classList.remove('d-none');
+
+            if (navAvatar) navAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
+            if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
+
+            if (navBtnLogout) {
+                navBtnLogout.onclick = (e) => {
+                    e.preventDefault();
+                    signOut(auth).then(() => {
+                        window.location.reload();
+                    });
+                };
+            }
+        } else {
+            // User is signed out
+            if (navBtnLogin) navBtnLogin.classList.remove('d-none');
+            if (navUserProfile) navUserProfile.classList.add('d-none');
+        }
+    });
+</script>

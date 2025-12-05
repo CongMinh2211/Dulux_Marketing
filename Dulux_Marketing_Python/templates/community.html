@@ -92,7 +92,7 @@
 
     {% include 'partials/header.html' %}
 
-    <div class="container mt-4">
+    <div class="container mt-4" style="padding-top: 100px;">
         <!-- Header Actions -->
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h2 class="fw-bold text-primary-custom m-0">Bài Viết & Cảm Hứng</h2>
@@ -283,11 +283,11 @@
                     <img src="${img}" alt="${post.title}">
                     <div class="news-overlay">
                         <span class="badge bg-primary mb-2">Nổi bật</span>
-                        <h3 class="fw-bold mb-1"><a href="{{ url_for('post_detail') }}?id=${post.id}" class="text-white text-decoration-none">${post.title}</a></h3>
+                        <h3 class="fw-bold mb-1"><a href="/bai-viet/${toSlug(post.title)}-${post.id}" class="text-white text-decoration-none">${post.title}</a></h3>
                         <small>${post.authorName} - ${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')}</small>
                     </div>
                     ${buttonsHtml}
-                    <a href="{{ url_for('post_detail') }}?id=${post.id}" class="stretched-link" style="z-index: 1;"></a>
+                    <a href="/bai-viet/${toSlug(post.title)}-${post.id}" class="stretched-link" style="z-index: 1;"></a>
                 </div>
             `;
         }
@@ -313,7 +313,7 @@
                         <h6 class="fw-bold mb-0 text-white">${post.title}</h6>
                     </div>
                     ${buttonsHtml}
-                    <a href="{{ url_for('post_detail') }}?id=${post.id}" class="stretched-link" style="z-index: 1;"></a>
+                    <a href="/bai-viet/${toSlug(post.title)}-${post.id}" class="stretched-link" style="z-index: 1;"></a>
                 </div>
             `;
         }
@@ -341,12 +341,12 @@
             return `
                 <div class="news-list-item row align-items-center">
                     <div class="col-md-4">
-                        <a href="{{ url_for('post_detail') }}?id=${post.id}">
+                        <a href="/bai-viet/${toSlug(post.title)}-${post.id}">
                             <img src="${img}" class="news-list-img" alt="${post.title}">
                         </a>
                     </div>
                     <div class="col-md-8">
-                        <h5 class="fw-bold mt-2 mt-md-0"><a href="{{ url_for('post_detail') }}?id=${post.id}" class="text-decoration-none text-dark hover-primary">${post.title}</a></h5>
+                        <h5 class="fw-bold mt-2 mt-md-0"><a href="/bai-viet/${toSlug(post.title)}-${post.id}" class="text-decoration-none text-dark hover-primary">${post.title}</a></h5>
                         <p class="text-muted small mb-2">${summary.substring(0, 120)}...</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted"><i class="far fa-clock me-1"></i> ${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')} - <strong>${post.authorName}</strong></small>
@@ -361,15 +361,26 @@
             const img = post.image || 'https://via.placeholder.com/100x100?text=Thumb';
             return `
                 <div class="sidebar-item">
-                    <a href="{{ url_for('post_detail') }}?id=${post.id}">
+                    <a href="/bai-viet/${toSlug(post.title)}-${post.id}">
                         <img src="${img}" class="sidebar-img" alt="${post.title}">
                     </a>
                     <div>
-                        <h6 class="mb-1 small fw-bold"><a href="{{ url_for('post_detail') }}?id=${post.id}" class="text-decoration-none text-dark">${post.title}</a></h6>
+                        <h6 class="mb-1 small fw-bold"><a href="/bai-viet/${toSlug(post.title)}-${post.id}" class="text-decoration-none text-dark">${post.title}</a></h6>
                         <small class="text-muted" style="font-size: 0.75rem;">${new Date(post.createdAt?.seconds * 1000).toLocaleDateString('vi-VN')}</small>
                     </div>
                 </div>
             `;
+        }
+
+        function toSlug(title) {
+            if (!title) return '';
+            return title.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[đĐ]/g, 'd')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-');
         }
     </script>
 
