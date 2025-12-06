@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CKEditor 5 -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 300px;
+        }
+    </style>
 </head>
 
 <body>
@@ -36,7 +43,7 @@
                         <div class="mb-4">
                             <label for="pr-content" class="form-label fw-bold">Mô tả</label>
                             <textarea class="form-control" id="pr-content" rows="6"
-                                placeholder="Mô tả ngắn về nội dung..." required></textarea>
+                                placeholder="Mô tả ngắn về nội dung..."></textarea>
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold"><i class="fas fa-link me-1"></i>Link bài viết
@@ -88,6 +95,18 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        let editorInstance;
+
+        // Initialize CKEditor
+        ClassicEditor
+            .create(document.querySelector('#pr-content'))
+            .then(editor => {
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         // Auth Check
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -111,7 +130,15 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     document.getElementById('pr-title').value = data.title;
-                    document.getElementById('pr-content').value = data.content;
+
+                    // Set content to CKEditor
+                    if (editorInstance) {
+                        editorInstance.setData(data.content || '');
+                    } else {
+                        // If editor not ready yet, wait a bit or set value to textarea
+                        document.getElementById('pr-content').value = data.content;
+                    }
+
                     document.getElementById('pr-link').value = data.externalLink;
                     document.getElementById('pr-image').value = data.image || '';
                 } else {
@@ -129,7 +156,8 @@
             if (!user) return;
 
             const title = document.getElementById('pr-title').value;
-            const content = document.getElementById('pr-content').value;
+            // Get content from CKEditor
+            const content = editorInstance ? editorInstance.getData() : document.getElementById('pr-content').value;
             const link = document.getElementById('pr-link').value;
             const image = document.getElementById('pr-image').value;
 
