@@ -26,6 +26,11 @@
     </div>
 
     <div class="container mt-5">
+        <div class="d-flex justify-content-end mb-4 d-none" id="create-pr-wrapper">
+            <a href="{{ url_for('create_pr') }}" class="btn btn-primary-custom rounded-pill">
+                <i class="fas fa-plus-circle me-2"></i>Đăng Tin Mới
+            </a>
+        </div>
         <div class="row mb-4 align-items-center">
             <div id="loading-pr" class="loading-spinner">
                 <div class="spinner-border text-primary" role="status">
