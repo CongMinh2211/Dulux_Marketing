@@ -364,7 +364,7 @@ function renderProducts() {
             <div class="col-md-4" data-aos="fade-up">
                 <div class="product-card-new h-100">
                     <i class="far fa-heart wishlist-icon"></i>
-                    <img src="${p.image}" alt="${p.name}">
+                    <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Sản+phẩm+Dulux'">
                     <h5>${p.name}</h5>
                     <ul class="product-features">
                         ${p.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
