@@ -222,7 +222,7 @@ function loadHeader() {
                         </div>
                     </li>
 
-                    <li class="nav-item ms-lg-3"><a href="products.html" class="btn btn-primary-custom">Mua Ngay</a>
+                    <li class="nav-item ms-lg-3"><a href="https://www.dulux.vn/lien-he-voi-chung-toi" target="_blank" class="btn btn-primary-custom">Mua Ngay</a>
                     </li>
                 </ul>
             </div>

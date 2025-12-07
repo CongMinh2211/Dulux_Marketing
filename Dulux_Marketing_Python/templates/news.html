@@ -514,8 +514,8 @@
 
                         <div class="mb-4 text-center bg-white p-3 border">
                             <p class="text-muted small mb-1">Quảng cáo</p>
-                            <img src="https://via.placeholder.com/300x250?text=Quảng+Cáo+Sơn" alt="Ads"
-                                class="img-fluid">
+                            <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&h=250&fit=crop"
+                                alt="Ads" class="img-fluid">
                         </div>
 
                         <div>
@@ -594,7 +594,8 @@
                     <!-- Ads Placeholder -->
                     <div class="mb-4 text-center bg-white p-3 border">
                         <p class="text-muted small mb-1">Quảng cáo</p>
-                        <img src="https://via.placeholder.com/300x250?text=Quảng+Cáo+Sơn" alt="Ads" class="img-fluid">
+                        <img src="https://images.unsplash.com/photo-1572786885177-7ee67729bb66?w=300&h=250&fit=crop"
+                            alt="Ads" class="img-fluid">
                     </div>
 
                     <div>
@@ -719,7 +720,7 @@
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = post.content;
             const img = tempDiv.querySelector('img');
-            const imgSrc = img ? img.src : 'https://via.placeholder.com/800x400?text=VTC+News';
+            const imgSrc = img ? img.src : 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?w=800&h=400&fit=crop';
 
             const html = `
                 <a href="${url}" onclick="event.preventDefault(); navigateTo('${url}')">
@@ -742,7 +743,7 @@
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = post.content;
                 const img = tempDiv.querySelector('img');
-                const imgSrc = img ? img.src : 'https://via.placeholder.com/120x80?text=News';
+                const imgSrc = img ? img.src : 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=120&h=80&fit=crop';
 
                 const html = `
                     <div class="sub-featured-item">
@@ -768,7 +769,7 @@
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = post.content;
                 const img = tempDiv.querySelector('img');
-                const imgSrc = img ? img.src : 'https://via.placeholder.com/240x160?text=News';
+                const imgSrc = img ? img.src : 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=240&h=160&fit=crop';
                 const textContent = tempDiv.textContent || tempDiv.innerText || "";
                 const desc = textContent.substring(0, 150) + "...";
 

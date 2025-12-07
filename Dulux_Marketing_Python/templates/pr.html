@@ -142,7 +142,7 @@
                             <div class="pr-card">
                                 <div class="pr-card-img-wrapper">
                                     <a href="${pr.externalLink || '#'}" target="_blank">
-                                        <img src="${pr.image || 'https://via.placeholder.com/400x250?text=No+Image'}" alt="${pr.title}">
+                                        <img src="${pr.image || 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?w=400&h=250&fit=crop'}" alt="${pr.title}">
                                     </a>
                                     <!-- Chỉ hiển thị nút Sửa/Xóa nếu là tác giả -->
                                     ${isAuthor ? `<button class="pr-edit-btn" onclick="location.href='{{ url_for('create_pr') }}?id=${prId}'"><i class="fas fa-edit"></i></button>

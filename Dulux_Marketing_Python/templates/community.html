@@ -272,7 +272,7 @@
 
         // Render bài viết Hero lớn
         function renderHeroLarge(post) {
-            const img = post.image || 'https://via.placeholder.com/800x400?text=Dulux+Community';
+            const img = post.image || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800&h=400&fit=crop';
             const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
             const buttonsHtml = isAuthor ? `
                 <div class="position-absolute top-0 end-0 p-3" style="z-index: 2;">
@@ -301,7 +301,7 @@
 
         // Render bài viết Hero nhỏ
         function renderHeroSmall(post, element) {
-            const img = post.image || 'https://via.placeholder.com/400x200?text=Dulux';
+            const img = post.image || 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&h=200&fit=crop';
             const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
             const buttonsHtml = isAuthor ? `
                 <div class="position-absolute top-0 end-0 p-2" style="z-index: 2;">
@@ -328,7 +328,7 @@
 
         // Render mục tin tức trong danh sách
         function renderNewsItem(post) {
-            const img = post.image || 'https://via.placeholder.com/300x200?text=News';
+            const img = post.image || 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?w=300&h=200&fit=crop';
             // Loại bỏ thẻ HTML để lấy tóm tắt
             const tmp = document.createElement("DIV");
             tmp.innerHTML = post.content;
@@ -368,7 +368,7 @@
 
         // Render mục tin tức trong sidebar
         function renderSidebarItem(post) {
-            const img = post.image || 'https://via.placeholder.com/100x100?text=Thumb';
+            const img = post.image || 'https://images.unsplash.com/photo-1572786885177-7ee67729bb66?w=100&h=100&fit=crop';
             return `
                 <div class="sidebar-item">
                     <a href="/bai-viet/${toSlug(post.title)}-${post.id}">
