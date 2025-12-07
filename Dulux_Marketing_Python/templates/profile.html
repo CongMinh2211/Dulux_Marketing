@@ -50,6 +50,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="profile-card mb-5">
+                    <!-- Profile Header: Hiển thị avatar và thông tin cơ bản -->
                     <div class="profile-header">
                         <div class="profile-avatar" id="profile-avatar">U</div>
                         <h3 class="fw-bold" id="profile-name">Đang tải...</h3>
@@ -59,6 +60,7 @@
                         <h4 class="fw-bold text-primary mb-4"><i class="fas fa-user-edit me-2"></i>Cập Nhật Thông Tin
                         </h4>
 
+                        <!-- Profile Form: Form cập nhật thông tin cá nhân -->
                         <form id="profile-form">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Tên hiển thị</label>
@@ -133,6 +135,7 @@
 
         let currentUser = null;
 
+        // Auth Listener: Tải thông tin người dùng khi đăng nhập
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -145,7 +148,7 @@
                 // Fill Form with Auth Data
                 displayNameInput.value = user.displayName || "";
 
-                // Fetch Additional Data from Firestore
+                // Fetch Additional Data from Firestore (Phone, Address)
                 try {
                     const docRef = doc(db, "users", user.uid);
                     const docSnap = await getDoc(docRef);
@@ -164,6 +167,7 @@
             }
         });
 
+        // Handle Profile Update: Xử lý cập nhật thông tin
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;

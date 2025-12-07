@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <!-- Cấu hình meta tag -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Thực Tế Ảo 360° - Dulux</title>
+
+    <!-- Favicon -->
+    <link rel='icon' href='https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180'
+        type='image/x-icon'>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Pannellum 360 Viewer CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Showroom Custom Styles -->
+    <style>
+        /* Hero Section Styling: Phần banner chính */
+        .showroom-hero {
+            background: linear-gradient(135deg, #003B73 0%, #00A9CE 100%);
+            padding: 80px 0 60px;
+            color: white;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        /* Panorama Viewer: Container cho trình xem 360 độ */
+        #panorama {
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Scene Selector: Thanh chọn không gian */
+        .scene-selector {
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Scene Button: Nút chọn từng không gian */
+        .scene-btn {
+            width: 90px;
+            height: 90px;
+            border-radius: 15px;
+            border: 3px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        /* Active & Hover States: Trạng thái được chọn và hover */
+        .scene-btn.active,
+        .scene-btn:hover {
+            border-color: var(--dulux-blue);
+            transform: scale(1.1);
+            opacity: 1;
+            box-shadow: 0 5px 15px rgba(0, 94, 184, 0.3);
+        }
+
+        .scene-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .scene-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header: Thanh điều hướng -->
+    {% include 'partials/header.html' %}
+
+    <!-- Hero Section: Banner chính -->
+    <div class="showroom-hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3" data-aos="fade-down">Showroom Thực Tế Ảo 360°</h1>
+            <p class="lead mb-0" data-aos="fade-up" data-aos-delay="100">Trải nghiệm 10+ không gian nội thất 3D với màu
+                sắc chân thực.</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <!-- 360 Viewer: Trình xem panorama 360 độ -->
+        <div class="row justify-content-center">
+            <div class="col-12" data-aos="zoom-in">
+                <div id="panorama"></div>
+            </div>
+        </div>
+
+        <!-- Scene Selector: Thanh chọn không gian -->
+        <div class="scene-selector d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up"
+            data-aos-delay="200">
+            <!-- Phòng Khách Gỗ - Kiểu Việt Nam -->
+            <div class="text-center">
+                <div class="scene-btn active" onclick="switchScene('lounge', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/wooden_lounge.jpg"
+                        alt="Phòng Khách">
+                </div>
+                <div class="scene-label">Phòng Khách</div>
+            </div>
+            <!-- Phòng Ngủ -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('bedroom', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lythwood_room.jpg"
+                        alt="Phòng Ngủ">
+                </div>
+                <div class="scene-label">Phòng Ngủ</div>
+            </div>
+            <!-- Phòng Tắm -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('bathroom', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/bathroom.jpg"
+                        alt="Phòng Tắm">
+                </div>
+                <div class="scene-label">Phòng Tắm</div>
+            </div>
+            <!-- Văn Phòng -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('office', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/poly_haven_studio.jpg"
+                        alt="Văn Phòng">
+                </div>
+                <div class="scene-label">Văn Phòng</div>
+            </div>
+            <!-- Studio -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('studio', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/studio_small_08.jpg"
+                        alt="Studio">
+                </div>
+                <div class="scene-label">Studio</div>
+            </div>
+            <!-- Sảnh -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('hall', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/entrance_hall.jpg"
+                        alt="Sảnh">
+                </div>
+                <div class="scene-label">Sảnh</div>
+            </div>
+            <!-- Lounge Cao Cấp -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('lythwood-lounge', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lythwood_lounge.jpg"
+                        alt="Lounge">
+                </div>
+                <div class="scene-label">Lounge Cao Cấp</div>
+            </div>
+            <!-- Phòng Y Tế -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('hospital', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/hospital_room_2.jpg"
+                        alt="Phòng Y Tế">
+                </div>
+                <div class="scene-label">Phòng Y Tế</div>
+            </div>
+            <!-- Studio Xanh -->
+            <div class="text-center">
+                <div class="scene-btn" onclick="switchScene('blue-studio', this)">
+                    <img src="https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/blue_photo_studio.jpg"
+                        alt="Studio Xanh">
+                </div>
+                <div class="scene-label">Studio Xanh</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section: Phần tính năng -->
+    <div class="container mb-5">
+        <div class="row g-4 text-center">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="p-4 bg-light rounded-4 h-100">
+                    <i class="fas fa-vr-cardboard fa-3x text-primary mb-3"></i>
+                    <h4>10+ Không Gian 3D</h4>
+                    <p class="text-muted">Khám phá đa dạng phòng khách, phòng ngủ, văn phòng, studio và nhiều hơn nữa.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-4 bg-light rounded-4 h-100">
+                    <i class="fas fa-palette fa-3x text-success mb-3"></i>
+                    <h4>Màu Sắc Chân Thực</h4>
+                    <p class="text-muted">Xem màu sơn hiển thị dưới các điều kiện ánh sáng khác nhau.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="p-4 bg-light rounded-4 h-100">
+                    <i class="fas fa-couch fa-3x text-warning mb-3"></i>
+                    <h4>Cảm Hứng Nội Thất</h4>
+                    <p class="text-muted">Tham khảo cách bài trí nội thất hiện đại với màu sơn Dulux.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer: Chân trang -->
+    {% include 'partials/footer.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Pannellum 360 Viewer JS -->
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        // Cấu hình 9 không gian nội thất 3D
+        const scenes = {
+            "lounge": {
+                "title": "Phòng Khách Gỗ Ấm Áp",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/wooden_lounge.jpg",
+                "autoLoad": true
+            },
+            "bedroom": {
+                "title": "Phòng Ngủ Ấm Cúng",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lythwood_room.jpg",
+                "autoLoad": true
+            },
+            "bathroom": {
+                "title": "Phòng Tắm Hiện Đại",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/bathroom.jpg",
+                "autoLoad": true
+            },
+            "office": {
+                "title": "Văn Phòng Tại Nhà",
+                "hfov": 110,
+                "yaw": 90,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/poly_haven_studio.jpg",
+                "autoLoad": true
+            },
+            "studio": {
+                "title": "Studio Chuyên Nghiệp",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/studio_small_08.jpg",
+                "autoLoad": true
+            },
+            "hall": {
+                "title": "Sảnh Vào Sang Trọng",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/entrance_hall.jpg",
+                "autoLoad": true
+            },
+            "lythwood-lounge": {
+                "title": "Lounge Cao Cấp",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lythwood_lounge.jpg",
+                "autoLoad": true
+            },
+            "hospital": {
+                "title": "Phòng Y Tế/Bệnh Viện",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/hospital_room_2.jpg",
+                "autoLoad": true
+            },
+            "blue-studio": {
+                "title": "Studio Xanh Chuyên Nghiệp",
+                "hfov": 110,
+                "yaw": 0,
+                "type": "equirectangular",
+                "panorama": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/blue_photo_studio.jpg",
+                "autoLoad": true
+            }
+        };
+
+        // Khởi tạo Pannellum Viewer
+        let viewer = pannellum.viewer('panorama', {
+            "default": {
+                "firstScene": "lounge",
+                "author": "Dulux Marketing",
+                "sceneFadeDuration": 1000
+            },
+            "scenes": scenes
+        });
+
+        // Hàm chuyển đổi giữa các không gian
+        function switchScene(sceneId, btn) {
+            viewer.loadScene(sceneId);
+            document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

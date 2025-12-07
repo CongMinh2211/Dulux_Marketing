@@ -1,8 +1,9 @@
-<!-- Firebase SDKs & Auth Logic -->
+<!-- Firebase SDKs & Auth Logic: Tích hợp SDK Firebase và xử lý logic xác thực -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+    // Cấu hình Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
         authDomain: "dulux-marketing.firebaseapp.com",
@@ -13,9 +14,11 @@
         measurementId: "G-K3B9M6XQXE"
     };
 
+    // Khởi tạo Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // Lắng nghe sự thay đổi trạng thái đăng nhập
     onAuthStateChanged(auth, (user) => {
         const navBtnLogin = document.getElementById('nav-btn-login');
         const navUserProfile = document.getElementById('nav-user-profile');
@@ -24,25 +27,28 @@
         const navBtnLogout = document.getElementById('nav-btn-logout');
 
         if (user) {
-            // User is signed in
-            if (navBtnLogin) navBtnLogin.classList.add('d-none');
-            if (navUserProfile) navUserProfile.classList.remove('d-none');
+            // User is signed in: Người dùng đã đăng nhập
+            if (navBtnLogin) navBtnLogin.classList.add('d-none'); // Ẩn nút đăng nhập
+            if (navUserProfile) navUserProfile.classList.remove('d-none'); // Hiện thông tin người dùng
 
+            // Hiển thị avatar (chữ cái đầu của tên hoặc email)
             if (navAvatar) navAvatar.textContent = (user.displayName || user.email)[0].toUpperCase();
+            // Hiển thị tên người dùng
             if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
 
+            // Xử lý sự kiện đăng xuất
             if (navBtnLogout) {
                 navBtnLogout.onclick = (e) => {
                     e.preventDefault();
                     signOut(auth).then(() => {
-                        window.location.reload();
+                        window.location.reload(); // Tải lại trang sau khi đăng xuất
                     });
                 };
             }
         } else {
-            // User is signed out
-            if (navBtnLogin) navBtnLogin.classList.remove('d-none');
-            if (navUserProfile) navUserProfile.classList.add('d-none');
+            // User is signed out: Người dùng chưa đăng nhập
+            if (navBtnLogin) navBtnLogin.classList.remove('d-none'); // Hiện nút đăng nhập
+            if (navUserProfile) navUserProfile.classList.add('d-none'); // Ẩn thông tin người dùng
         }
     });
 </script>

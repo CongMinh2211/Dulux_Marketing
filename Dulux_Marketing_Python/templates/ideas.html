@@ -16,7 +16,7 @@
 <body>
     {% include 'partials/header.html' %}
 
-    <!-- Ideas Hero Section -->
+    <!-- Ideas Hero Section: Banner chính cho trang ý tưởng -->
     <section class="bg-white py-5 mt-5">
         <div class="container text-center">
             <h1 class="display-4 fw-light mb-3" data-aos="fade-up">Ý tưởng trang trí</h1>
@@ -25,12 +25,12 @@
         </div>
     </section>
 
-    <!-- Filter Section -->
+    <!-- Filter Section: Phần bộ lọc ý tưởng -->
     <section class="container mb-5">
-        <!-- Color Filter Bar -->
+        <!-- Color Filter Bar: Bộ lọc theo màu sắc -->
         <div class="d-flex justify-content-center mb-4" data-aos="fade-up">
             <div class="d-flex flex-wrap justify-content-center gap-0">
-                <!-- Colors will be injected here or hardcoded for layout -->
+                <!-- Các ô màu để lọc ý tưởng. Khi click vào sẽ lọc các bài viết có màu tương ứng -->
                 <div class="idea-color-filter" style="background-color: #E0E0E0;" data-color="all" title="Tất cả"></div>
                 <div class="idea-color-filter" style="background-color: #D32F2F;" data-color="red" title="Đỏ"></div>
                 <div class="idea-color-filter" style="background-color: #F57F17;" data-color="orange" title="Cam"></div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <!-- Dropdown Filter -->
+        <!-- Dropdown Filter: Bộ lọc theo vị trí phòng -->
         <div class="d-flex justify-content-center mb-5" data-aos="fade-up">
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle px-4 py-2 rounded-pill" type="button"
@@ -78,7 +78,7 @@
             <h4 class="fw-bold text-secondary">Các ý tưởng trang trí ngôi nhà của bạn</h4>
         </div>
 
-        <!-- Ideas Grid -->
+        <!-- Ideas Grid: Lưới hiển thị các ý tưởng (được tải động qua JS) -->
         <div id="ideas-grid" class="row g-4">
             <!-- Ideas will be loaded here via JavaScript -->
         </div>

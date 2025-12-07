@@ -16,7 +16,7 @@
 <body>
     {% include 'partials/header.html' %}
 
-    <!-- Product Header -->
+    <!-- Product Header: Tiêu đề trang sản phẩm -->
     <section class="bg-light-custom py-5">
         <div class="container">
             <h1 class="fw-bold text-primary mb-2">Tìm sản phẩm cho dự án của bạn</h1>
@@ -24,13 +24,13 @@
         </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Main Content: Nội dung chính -->
     <section class="container pb-5">
         <div class="row">
-            <!-- Sidebar Filters -->
+            <!-- Sidebar Filters: Bộ lọc bên trái -->
             <div class="col-lg-3 mb-4">
                 <div class="sidebar-filter">
-                    <!-- Location -->
+                    <!-- Location Filter: Vị trí (Nội thất/Ngoại thất) -->
                     <div class="filter-category">
                         <h6 data-bs-toggle="collapse" data-bs-target="#locationFilter">
                             Vị trí <i class="fas fa-chevron-down small"></i>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
 
-                    <!-- Brand -->
+                    <!-- Brand Filter: Nhãn hiệu (Dulux/Maxilite) -->
                     <div class="filter-category">
                         <h6 data-bs-toggle="collapse" data-bs-target="#brandFilter">
                             Nhãn hiệu <i class="fas fa-chevron-down small"></i>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <!-- Product Type -->
+                    <!-- Product Type Filter: Loại sản phẩm -->
                     <div class="filter-category">
                         <h6 data-bs-toggle="collapse" data-bs-target="#productFilter">
                             Sản phẩm <i class="fas fa-chevron-down small"></i>
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-                    <!-- Project Type -->
+                    <!-- Project Type Filter: Loại dự án -->
                     <div class="filter-category">
                         <h6 data-bs-toggle="collapse" data-bs-target="#projectFilter">
                             Loại dự án <i class="fas fa-chevron-down small"></i>
@@ -118,13 +118,13 @@
                 </div>
             </div>
 
-            <!-- Product Grid -->
+            <!-- Product Grid: Lưới hiển thị sản phẩm -->
             <div class="col-lg-9">
                 <div id="product-grid" class="row g-4">
                     <!-- Products will be loaded here via JavaScript -->
                 </div>
 
-                <!-- Pagination -->
+                <!-- Pagination: Phân trang -->
                 <nav aria-label="Page navigation" class="mt-5">
                     <ul class="pagination justify-content-center" id="pagination">
                         <!-- Pagination items will be loaded here -->
@@ -134,7 +134,7 @@
         </div>
     </section>
 
-    <!-- Product Detail Modal -->
+    <!-- Product Detail Modal: Modal chi tiết sản phẩm -->
     <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">

@@ -46,6 +46,7 @@
 <body>
 
     <div class="auth-card">
+        <!-- Logo và Tiêu đề -->
         <div class="auth-logo">
             <a href="{{ url_for('home') }}">
                 <img src="https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180"
@@ -55,7 +56,7 @@
             <p class="text-muted">Đăng nhập để tham gia cộng đồng</p>
         </div>
 
-        <!-- Tabs -->
+        <!-- Tabs: Chuyển đổi giữa Đăng nhập và Đăng ký -->
         <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active rounded-pill px-4" id="pills-login-tab" data-bs-toggle="pill"
@@ -68,7 +69,7 @@
         </ul>
 
         <div class="tab-content" id="pills-tabContent">
-            <!-- Login Form -->
+            <!-- Login Form: Form đăng nhập -->
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
                 <form id="login-form">
                     <div class="mb-3">
@@ -95,7 +96,7 @@
                 </form>
             </div>
 
-            <!-- Register Form -->
+            <!-- Register Form: Form đăng ký -->
             <div class="tab-pane fade" id="pills-register" role="tabpanel">
                 <form id="register-form">
                     <div class="mb-3">
@@ -132,6 +133,7 @@
             </div>
         </div>
 
+        <!-- Error Message Display: Hiển thị lỗi nếu có -->
         <div id="auth-error" class="alert alert-danger mt-3 d-none text-center small"></div>
 
         <div class="text-center mt-4">
@@ -140,7 +142,7 @@
         </div>
     </div>
 
-    <!-- Toast Container (Added manually since footer is not included here) -->
+    <!-- Toast Container: Thông báo nổi (thủ công vì không include footer) -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
         <div id="liveToast" class="toast align-items-center text-white bg-primary border-0" role="alert"
             aria-live="assertive" aria-atomic="true">
@@ -158,6 +160,7 @@
     <!-- Include script.js for showToast -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
+    <!-- Firebase Integration: Xử lý đăng nhập/đăng ký với Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -179,7 +182,7 @@
         const registerForm = document.getElementById('register-form');
         const authError = document.getElementById('auth-error');
 
-        // Login
+        // Login Handler
         if (loginForm) {
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -199,7 +202,7 @@
             });
         }
 
-        // Register
+        // Register Handler
         if (registerForm) {
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();

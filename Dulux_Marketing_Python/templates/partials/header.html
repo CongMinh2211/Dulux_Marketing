@@ -1,12 +1,16 @@
+<!-- Navbar: Thanh điều hướng chính -->
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
+        <!-- Logo thương hiệu -->
         <a class="navbar-brand" href="{{ url_for('home') }}">
             <img src="https://tse2.mm.bing.net/th/id/OIP.t3juAf5Zjrd-5RjoQ37itwHaEK?pid=Api&P=0&h=180" alt="Dulux Logo"
                 style="height: 50px;">
         </a>
+        <!-- Nút toggle cho mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- Menu điều hướng -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' else '' }}"
@@ -15,6 +19,7 @@
                         href="{{ url_for('about') }}">Giới thiệu</a></li>
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'products' else '' }}"
                         href="{{ url_for('products') }}">Sản phẩm</a></li>
+                <!-- Dropdown Menu: Ý tưởng -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {{ 'active' if request.endpoint == 'ideas' else '' }}"
                         href="{{ url_for('ideas') }}" id="ideasDropdown" role="button" data-bs-toggle="dropdown"
@@ -46,20 +51,22 @@
                 </li>
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'tool' else '' }}"
                         href="{{ url_for('tool') }}">Tìm kiếm màu sắc </a></li>
+                <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'showroom' else '' }}"
+                        href="{{ url_for('showroom') }}">Showroom 360°</a></li>
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'community' else '' }}"
                         href="{{ url_for('community') }}">Bài viết</a></li>
                 <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'pr' else '' }}"
                         href="{{ url_for('pr') }}">PR Online</a></li>
 
-                <!-- Auth Items -->
+                <!-- Auth Items: Phần đăng nhập/đăng ký -->
                 <li class="nav-item ms-lg-3 d-flex align-items-center">
-                    <!-- Login Button (Visible when logged out) -->
+                    <!-- Login Button (Visible when logged out): Hiển thị khi chưa đăng nhập -->
                     <a id="nav-btn-login" href="{{ url_for('login') }}"
                         class="btn btn-outline-primary rounded-pill btn-sm">
                         <i class="fas fa-user me-2"></i>Đăng Nhập
                     </a>
 
-                    <!-- User Profile Dropdown (Visible when logged in) -->
+                    <!-- User Profile Dropdown (Visible when logged in): Hiển thị khi đã đăng nhập -->
                     <div id="nav-user-profile" class="dropdown d-none">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">

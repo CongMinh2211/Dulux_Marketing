@@ -1,4 +1,4 @@
-// Tawk.to Script
+// Tawk.to Script: Tích hợp widget chat trực tuyến Tawk.to
 var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 
 Tawk_API.onLoad = function () {
@@ -17,7 +17,7 @@ Tawk_API.onStatusChange = function (status) {
     document.head.appendChild(s1);
 })();
 
-// Initialize AOS Animation
+// Initialize AOS Animation: Khởi tạo thư viện hiệu ứng cuộn trang AOS
 document.addEventListener('DOMContentLoaded', function () {
     loadHeader();
     loadFooter();
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Navbar scroll effect (Glassmorphism toggle)
+// Navbar scroll effect (Glassmorphism toggle): Hiệu ứng đổi màu thanh điều hướng khi cuộn
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
@@ -46,7 +46,7 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Product Detail Modal Logic
+// Product Detail Modal Logic: Hiển thị chi tiết sản phẩm trong Modal
 function showProductDetail(productId) {
     const product = allProducts.find(p => p.id === productId);
     if (!product) return;
@@ -70,31 +70,31 @@ function showProductDetail(productId) {
     myModal.show();
 }
 
-// Virtual Room Painter Logic
+// Virtual Room Painter Logic: Logic cho công cụ phối màu ảo
 function changeWallColor(element) {
     // Get color and name from data attributes
     const color = element.getAttribute('data-color');
     const name = element.getAttribute('data-name');
 
-    // Update Wall Overlay Background
+    // Update Wall Overlay Background: Cập nhật màu nền cho lớp phủ tường
     const wallOverlay = document.getElementById('wall-overlay');
     if (wallOverlay) {
         wallOverlay.style.backgroundColor = color;
     }
 
-    // Update Label Text
+    // Update Label Text: Cập nhật tên màu hiển thị
     const label = document.getElementById('color-name-display');
     if (label) {
         label.innerText = 'Màu hiện tại: ' + name;
     }
 
-    // Update Active State for Swatches
+    // Update Active State for Swatches: Cập nhật trạng thái active cho ô màu
     const swatches = document.querySelectorAll('.color-swatch');
     swatches.forEach(swatch => swatch.classList.remove('active'));
     element.classList.add('active');
 }
 
-// Paint Calculator Logic
+// Paint Calculator Logic: Logic cho công cụ tính lượng sơn
 function calculatePaint() {
     const length = parseFloat(document.getElementById('length').value);
     const width = parseFloat(document.getElementById('width').value);
@@ -109,19 +109,19 @@ function calculatePaint() {
     // Calculate Total Wall Area: 2 * (L + W) * H
     let totalArea = 2 * (length + width) * height;
 
-    // Subtract 10% for doors/windows
+    // Subtract 10% for doors/windows: Trừ 10% diện tích cho cửa
     let paintableArea = totalArea * 0.9;
 
-    // Coverage: 10m2 per litre (example)
+    // Coverage: 10m2 per litre (example): Định mức sơn (ví dụ: 10m2/lít)
     const coveragePerLitre = 10;
 
-    // Total Litres Needed
+    // Total Litres Needed: Tổng lượng sơn cần thiết
     let totalLitres = (paintableArea / coveragePerLitre) * layers;
 
-    // Round up to 1 decimal
+    // Round up to 1 decimal: Làm tròn lên 1 chữ số thập phân
     totalLitres = Math.ceil(totalLitres * 10) / 10;
 
-    // Display Result
+    // Display Result: Hiển thị kết quả
     const resultBox = document.getElementById('calcResult');
     const litresText = document.getElementById('litresResult');
 
@@ -129,7 +129,7 @@ function calculatePaint() {
         litresText.innerText = totalLitres + " Lít";
         resultBox.style.display = 'block';
 
-        // Simple animation
+        // Simple animation: Hiệu ứng xuất hiện đơn giản
         resultBox.style.opacity = 0;
         let op = 0.1;
         let timer = setInterval(function () {
@@ -142,7 +142,7 @@ function calculatePaint() {
         }, 10);
     }
 }
-// Search Filter Logic
+// Search Filter Logic: Logic tìm kiếm sản phẩm theo tên
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('keyup', function () {
@@ -160,7 +160,7 @@ if (searchInput) {
     });
 }
 
-// Shared Components Logic
+// Shared Components Logic: Tải Header và Footer dùng chung
 function loadHeader() {
     const headerPlaceholder = document.getElementById('header-placeholder');
     if (headerPlaceholder) {
@@ -284,7 +284,7 @@ function setActiveLink() {
 }
 
 /* =========================================
-   DYNAMIC PRODUCT LOGIC
+   DYNAMIC PRODUCT LOGIC: Logic hiển thị sản phẩm động
    ========================================= */
 
 const productsData = [
@@ -325,7 +325,7 @@ let filteredProducts = [];
 const itemsPerPage = 9;
 let currentPage = 1;
 
-// Generate Data from Static List
+// Generate Data from Static List: Tạo dữ liệu sản phẩm từ danh sách tĩnh
 function generateProducts() {
     allProducts = productsData.map((p, index) => ({
         id: index + 1,
@@ -344,7 +344,7 @@ function generateProducts() {
     renderPagination();
 }
 
-// Render Products
+// Render Products: Hiển thị danh sách sản phẩm
 function renderProducts() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
@@ -382,7 +382,7 @@ function renderProducts() {
     });
 }
 
-// Render Pagination
+// Render Pagination: Hiển thị phân trang
 function renderPagination() {
     const pagination = document.getElementById('pagination');
     if (!pagination) return;
@@ -410,7 +410,7 @@ function renderPagination() {
     pagination.innerHTML = html;
 }
 
-// Change Page
+// Change Page: Chuyển trang
 window.changePage = function (page) {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     if (page < 1 || page > totalPages) return;
@@ -420,7 +420,7 @@ window.changePage = function (page) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Filter Logic
+// Filter Logic: Logic lọc sản phẩm
 function filterProducts() {
     const locationInputs = document.querySelectorAll('input[name="location"]:checked');
     const brandInput = document.querySelector('input[name="brand"]:checked');
@@ -454,7 +454,7 @@ function updateResultCount() {
     }
 }
 
-// Initialize
+// Initialize: Khởi tạo trang sản phẩm
 document.addEventListener('DOMContentLoaded', function () {
     // Only run on products page
     if (document.getElementById('product-grid')) {
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* =========================================
-   IDEAS PAGE LOGIC
+   IDEAS PAGE LOGIC: Logic cho trang Ý tưởng
    ========================================= */
 
 const ideasData = [
@@ -479,6 +479,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "blue",
         location: "Hành lang",
+        mood: "Sang trọng",
+        style: "Hiện đại",
         description: "Màu xanh nhạt mang lại cảm giác rộng rãi và thoáng đãng cho hành lang."
     },
     {
@@ -487,6 +489,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "brown",
         location: "Hành lang",
+        mood: "Ấm cúng",
+        style: "Cổ điển",
         description: "Tạo ấn tượng đầu tiên ấm áp và thân thiện."
     },
     {
@@ -495,6 +499,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "yellow",
         location: "Hành lang",
+        mood: "Vui tươi",
+        style: "Hiện đại",
         description: "Mang ánh nắng vào nhà với sắc vàng tươi vui."
     },
     {
@@ -503,6 +509,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "pink",
         location: "Hành lang",
+        mood: "Vui tươi",
+        style: "Bắc Âu",
         description: "Phá cách với sự kết hợp màu sắc độc đáo."
     },
     {
@@ -511,6 +519,8 @@ const ideasData = [
         image: "https://tse4.mm.bing.net/th/id/OIP.MwOMDuy2bk1arKl4uCj1qgAAAA?pid=Api&P=0&h=180",
         color: "pink",
         location: "Phòng khách",
+        mood: "Thư giãn",
+        style: "Tối giản",
         description: "Sự nhẹ nhàng và lãng mạn cho không gian sinh hoạt chung."
     },
     {
@@ -519,6 +529,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "grey",
         location: "Phòng ngủ",
+        mood: "Sang trọng",
+        style: "Hiện đại",
         description: "Sự kết hợp hiện đại và đầy cá tính."
     },
     {
@@ -527,6 +539,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "green",
         location: "Nhà bếp",
+        mood: "Vui tươi",
+        style: "Hiện đại",
         description: "Mang thiên nhiên vào gian bếp của bạn."
     },
     {
@@ -535,6 +549,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "blue",
         location: "Nhà văn phòng",
+        mood: "Sang trọng",
+        style: "Tối giản",
         description: "Tăng cường sự tập trung và hiệu quả làm việc."
     },
     {
@@ -543,6 +559,8 @@ const ideasData = [
         image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         color: "orange",
         location: "Phòng trẻ em",
+        mood: "Vui tươi",
+        style: "Bắc Âu",
         description: "Kích thích sự sáng tạo và vui tươi cho bé."
     },
     {
@@ -551,6 +569,8 @@ const ideasData = [
         image: "https://tse3.mm.bing.net/th/id/OIP.R26VWDVU_L5jmJIDmgULrwHaFc?pid=Api&P=0&h=180",
         color: "blue",
         location: "Phòng tắm",
+        mood: "Thư giãn",
+        style: "Hiện đại",
         description: "Tận hưởng cảm giác thư thái như ở spa ngay trong chính ngôi nhà của bạn."
     },
     {
@@ -559,6 +579,8 @@ const ideasData = [
         image: "https://tse2.mm.bing.net/th/id/OIP.zVdEnlmjLzPeNXrYhnBOuwAAAA?pid=Api&P=0&h=180",
         color: "grey",
         location: "Phòng tắm",
+        mood: "Sang trọng",
+        style: "Tối giản",
         description: "Thiết kế tối giản, hiện đại mang lại sự tiện nghi tối đa."
     },
     {
@@ -567,6 +589,8 @@ const ideasData = [
         image: "https://tse1.mm.bing.net/th/id/OIP.zFnWwYOzxK7N3SrWl4ztdAHaE8?pid=Api&P=0&h=180",
         color: "orange",
         location: "Phòng ăn",
+        mood: "Ấm cúng",
+        style: "Cổ điển",
         description: "Màu sắc ấm áp giúp bữa ăn gia đình thêm phần ngon miệng và gắn kết."
     },
     {
@@ -575,6 +599,8 @@ const ideasData = [
         image: "https://tse1.mm.bing.net/th/id/OIP.QnUjo5zCTL5n_Wr9qEGIPgHaHa?pid=Api&P=0&h=180",
         color: "brown",
         location: "Phòng ăn",
+        mood: "Sang trọng",
+        style: "Cổ điển",
         description: "Nâng tầm đẳng cấp cho không gian ẩm thực của bạn."
     }
 ];
@@ -596,6 +622,10 @@ function renderIdeas(ideas) {
                 <div class="card h-100 border-0 shadow-sm hover-card">
                     <div class="product-img-wrapper" style="height: 250px;">
                         <img src="${idea.image}" class="card-img-top" alt="${idea.title}">
+                        <div class="position-absolute top-0 end-0 p-2">
+                             <span class="badge bg-primary">${idea.mood}</span>
+                             <span class="badge bg-secondary">${idea.style}</span>
+                        </div>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title" style="font-size: 1.1rem;">${idea.title}</h5>
@@ -616,18 +646,38 @@ function filterIdeas() {
     const urlParams = new URLSearchParams(window.location.search);
     let selectedLocation = urlParams.get('location') || 'all';
     let selectedColor = 'all';
+    let selectedMood = 'all';
+    let selectedStyle = 'all';
 
-    // Update Dropdown Text if URL param exists
-    if (selectedLocation !== 'all') {
-        const dropdownText = document.getElementById('selectedLocation');
-        if (dropdownText) dropdownText.innerText = selectedLocation;
+    // Set initial values for dropdowns if they exist
+    const locationSelect = document.getElementById('locationSelect');
+    const moodSelect = document.getElementById('moodSelect');
+    const styleSelect = document.getElementById('styleSelect');
+
+    if (locationSelect) {
+        locationSelect.value = selectedLocation;
+        locationSelect.addEventListener('change', function () {
+            selectedLocation = this.value;
+            applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
+        });
     }
 
-    // Filter Logic
-    const colorFilters = document.querySelectorAll('.idea-color-filter');
-    const locationFilters = document.querySelectorAll('.idea-location-filter');
+    if (moodSelect) {
+        moodSelect.addEventListener('change', function () {
+            selectedMood = this.value;
+            applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
+        });
+    }
+
+    if (styleSelect) {
+        styleSelect.addEventListener('change', function () {
+            selectedStyle = this.value;
+            applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
+        });
+    }
 
     // Color Click Event
+    const colorFilters = document.querySelectorAll('.idea-color-filter');
     colorFilters.forEach(filter => {
         filter.addEventListener('click', function () {
             // Remove active class from others
@@ -635,38 +685,27 @@ function filterIdeas() {
             this.classList.add('active-filter');
 
             selectedColor = this.getAttribute('data-color');
-            applyFilter(selectedColor, selectedLocation);
-        });
-    });
-
-    // Location Click Event
-    locationFilters.forEach(filter => {
-        filter.addEventListener('click', function (e) {
-            e.preventDefault();
-            selectedLocation = this.getAttribute('data-location');
-
-            // Update Dropdown Text
-            const dropdownText = document.getElementById('selectedLocation');
-            if (dropdownText) dropdownText.innerText = selectedLocation === 'all' ? 'Tất cả' : selectedLocation;
-
-            applyFilter(selectedColor, selectedLocation);
+            applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
         });
     });
 
     // Initial Render
-    applyFilter(selectedColor, selectedLocation);
+    applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
 }
 
-function applyFilter(color, location) {
+function applyFilter(color, location, mood, style) {
     const filtered = ideasData.filter(idea => {
         const matchColor = color === 'all' || idea.color === color;
         const matchLocation = location === 'all' || idea.location === location;
-        return matchColor && matchLocation;
+        const matchMood = mood === 'all' || idea.mood === mood;
+        const matchStyle = style === 'all' || idea.style === style;
+
+        return matchColor && matchLocation && matchMood && matchStyle;
     });
     renderIdeas(filtered);
 }
 
-// Initialize Ideas Page
+// Initialize Ideas Page: Khởi tạo trang ý tưởng
 document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('ideas-grid')) {
         filterIdeas();
@@ -674,20 +713,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // =========================================
-// TOAST NOTIFICATION LOGIC
+// TOAST NOTIFICATION LOGIC: Logic hiển thị thông báo nổi
 // =========================================
 function showToast(message, type = 'success') {
     const toastEl = document.getElementById('liveToast');
     const toastBody = document.getElementById('toast-message');
-    
+
     if (toastEl && toastBody) {
         // Set Message
         toastBody.textContent = message;
 
         // Set Color based on Type
         toastEl.classList.remove('bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info');
-        
-        switch(type) {
+
+        switch (type) {
             case 'success':
                 toastEl.classList.add('bg-success');
                 break;

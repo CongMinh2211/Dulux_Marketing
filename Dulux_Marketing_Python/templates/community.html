@@ -12,7 +12,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* Newspaper Layout Specific Styles */
+        /* CSS cho giao diện dạng báo chí */
         .news-hero-large {
             height: 400px;
             position: relative;
@@ -93,7 +93,7 @@
     {% include 'partials/header.html' %}
 
     <div class="container mt-4" style="padding-top: 100px;">
-        <!-- Header Actions -->
+        <!-- Header Actions: Tiêu đề và nút viết bài -->
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h2 class="fw-bold text-primary-custom m-0">Bài Viết & Cảm Hứng</h2>
             <div id="create-post-wrapper" class="d-none">
@@ -103,6 +103,7 @@
             </div>
         </div>
 
+        <!-- Loading Spinner -->
         <div id="loading-feed" class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -110,10 +111,10 @@
             <p class="mt-2 text-muted">Đang tải nội dung...</p>
         </div>
 
-        <!-- Content Container (Hidden initially) -->
+        <!-- Content Container (Ẩn ban đầu) -->
         <div id="news-content" style="display: none;">
 
-            <!-- Hero Section -->
+            <!-- Hero Section: Các bài viết nổi bật -->
             <div class="row mb-4">
                 <div class="col-lg-8">
                     <div id="hero-large"></div>
@@ -126,7 +127,7 @@
 
             <!-- Main Content & Sidebar -->
             <div class="row">
-                <!-- Left Column: Latest News -->
+                <!-- Left Column: Latest News (Tin mới nhất) -->
                 <div class="col-lg-8">
                     <h4 class="fw-bold border-start border-4 border-primary ps-3 mb-4">Mới Nhất</h4>
                     <div id="latest-news-list">
@@ -134,7 +135,7 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Sidebar -->
+                <!-- Right Column: Sidebar (Chủ đề & Đọc nhiều) -->
                 <div class="col-lg-4">
                     <div class="bg-light p-4 rounded-3 mb-4">
                         <h5 class="fw-bold mb-3">Chủ Đề Nổi Bật</h5>
@@ -163,6 +164,7 @@
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
             authDomain: "dulux-marketing.firebaseapp.com",
@@ -173,11 +175,12 @@
             measurementId: "G-K3B9M6XQXE"
         };
 
+        // Khởi tạo Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Elements
+        // Các phần tử DOM
         const createPostWrapper = document.getElementById('create-post-wrapper');
         const loadingFeed = document.getElementById('loading-feed');
         const newsContent = document.getElementById('news-content');
@@ -188,7 +191,7 @@
         const latestNewsList = document.getElementById('latest-news-list');
         const sidebarNewsList = document.getElementById('sidebar-news-list');
 
-        // Auth Listener
+        // Lắng nghe trạng thái đăng nhập
         onAuthStateChanged(auth, (user) => {
             const navBtnLogin = document.getElementById('nav-btn-login');
             const navUserProfile = document.getElementById('nav-user-profile');
@@ -197,6 +200,7 @@
             const navBtnLogout = document.getElementById('nav-btn-logout');
 
             if (user) {
+                // Nếu đã đăng nhập
                 if (createPostWrapper) createPostWrapper.classList.remove('d-none');
                 if (navBtnLogin) navBtnLogin.classList.add('d-none');
                 if (navUserProfile) navUserProfile.classList.remove('d-none');
@@ -204,13 +208,15 @@
                 if (navUsername) navUsername.textContent = user.displayName || user.email.split('@')[0];
                 if (navBtnLogout) navBtnLogout.onclick = (e) => { e.preventDefault(); signOut(auth); };
             } else {
+                // Nếu chưa đăng nhập
                 if (createPostWrapper) createPostWrapper.classList.add('d-none');
                 if (navBtnLogin) navBtnLogin.classList.remove('d-none');
                 if (navUserProfile) navUserProfile.classList.add('d-none');
             }
-            loadPosts();
+            loadPosts(); // Tải danh sách bài viết
         });
 
+        // Hàm tải bài viết từ Firestore
         function loadPosts() {
             const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
@@ -226,27 +232,27 @@
                     return;
                 }
 
-                // Distribute posts
-                // 1. Hero Large (First post)
+                // Phân phối bài viết vào các vị trí
+                // 1. Hero Large (Bài viết mới nhất)
                 if (posts[0]) renderHeroLarge(posts[0]);
 
-                // 2. Hero Small (Next 2 posts)
+                // 2. Hero Small (2 bài viết tiếp theo)
                 if (posts[1]) renderHeroSmall(posts[1], heroSmall1);
                 if (posts[2]) renderHeroSmall(posts[2], heroSmall2);
 
-                // 3. Latest News (Rest of posts)
+                // 3. Latest News (Các bài viết còn lại)
                 latestNewsList.innerHTML = '';
                 posts.slice(3).forEach(post => {
                     latestNewsList.innerHTML += renderNewsItem(post);
                 });
 
-                // 4. Sidebar (Randomly pick 5 or just first 5)
+                // 4. Sidebar (Lấy 5 bài viết đầu tiên làm ví dụ)
                 sidebarNewsList.innerHTML = '';
                 posts.slice(0, 5).forEach(post => {
                     sidebarNewsList.innerHTML += renderSidebarItem(post);
                 });
 
-                // Add event listeners for delete buttons
+                // Thêm sự kiện cho nút xóa bài viết
                 document.querySelectorAll('.btn-delete-post').forEach(btn => {
                     btn.addEventListener('click', async (e) => {
                         e.preventDefault();
@@ -264,6 +270,7 @@
             });
         }
 
+        // Render bài viết Hero lớn
         function renderHeroLarge(post) {
             const img = post.image || 'https://via.placeholder.com/800x400?text=Dulux+Community';
             const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
@@ -292,6 +299,7 @@
             `;
         }
 
+        // Render bài viết Hero nhỏ
         function renderHeroSmall(post, element) {
             const img = post.image || 'https://via.placeholder.com/400x200?text=Dulux';
             const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
@@ -318,14 +326,15 @@
             `;
         }
 
+        // Render mục tin tức trong danh sách
         function renderNewsItem(post) {
             const img = post.image || 'https://via.placeholder.com/300x200?text=News';
-            // Strip HTML tags for summary
+            // Loại bỏ thẻ HTML để lấy tóm tắt
             const tmp = document.createElement("DIV");
             tmp.innerHTML = post.content;
             const summary = tmp.textContent || tmp.innerText || "";
 
-            // Check if current user is author
+            // Kiểm tra quyền tác giả
             const isAuthor = auth.currentUser && post.authorId && auth.currentUser.uid === post.authorId;
             const buttonsHtml = isAuthor ? `
                 <div>
@@ -357,6 +366,7 @@
             `;
         }
 
+        // Render mục tin tức trong sidebar
         function renderSidebarItem(post) {
             const img = post.image || 'https://via.placeholder.com/100x100?text=Thumb';
             return `
@@ -372,6 +382,7 @@
             `;
         }
 
+        // Hàm tạo Slug cho URL
         function toSlug(title) {
             if (!title) return '';
             return title.toLowerCase()

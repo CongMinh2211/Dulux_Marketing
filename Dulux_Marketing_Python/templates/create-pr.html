@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- CKEditor 5 Superbuild -->
+    <!-- CKEditor 5 Superbuild: Phiên bản đầy đủ tính năng bao gồm Font Size, Font Family -->
     <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/super-build/ckeditor.js"></script>
     <style>
         .ck-editor__editable_inline {
             min-height: 300px;
+            /* Thiết lập chiều cao tối thiểu cho vùng soạn thảo */
         }
     </style>
 </head>
@@ -42,6 +43,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="pr-content" class="form-label fw-bold">Mô tả</label>
+                            <!-- Textarea này sẽ được thay thế bởi CKEditor -->
                             <textarea class="form-control" id="pr-content" rows="6"
                                 placeholder="Mô tả ngắn về nội dung..."></textarea>
                         </div>
@@ -81,6 +83,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB3M56NmjF0v6L8w2j8iqgnsc8CK9P253A",
             authDomain: "dulux-marketing.firebaseapp.com",
@@ -91,14 +94,16 @@
             measurementId: "G-K3B9M6XQXE"
         };
 
+        // Khởi tạo Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
         let editorInstance;
 
-        // Initialize CKEditor Superbuild
+        // Khởi tạo CKEditor Superbuild
         CKEDITOR.ClassicEditor.create(document.getElementById("pr-content"), {
+            // Cấu hình thanh công cụ (Toolbar)
             toolbar: {
                 items: [
                     'heading', '|',
@@ -107,7 +112,7 @@
                     'outdent', 'indent', '|',
                     'undo', 'redo',
                     '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|', // Các tính năng Font
                     'alignment', '|',
                     'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
                     'specialCharacters', 'horizontalLine', 'pageBreak', '|',
@@ -115,24 +120,16 @@
                 ],
                 shouldNotGroupWhenFull: true
             },
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
+            // Cấu hình Heading
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
                     { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
                 ]
             },
+            // Cấu hình Font Family
             fontFamily: {
                 options: [
                     'default',
@@ -147,79 +144,29 @@
                 ],
                 supportAllValues: true
             },
+            // Cấu hình Font Size
             fontSize: {
                 options: [10, 12, 14, 'default', 18, 20, 22],
                 supportAllValues: true
             },
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            htmlEmbed: {
-                showPreviews: true
-            },
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
+            // Loại bỏ các plugin không cần thiết hoặc có phí
             removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType.
-                'MathType',
-                // The following features are part of the Productivity Pack and require additional license.
-                'SlashCommand',
-                'Template',
-                'DocumentOutline',
-                'FormatPainter',
-                'TableOfContents',
-                'PasteFromOfficeEnhanced'
+                'CKBox', 'CKFinder', 'EasyImage', 'RealTimeCollaborativeComments',
+                'RealTimeCollaborativeTrackChanges', 'RealTimeCollaborativeRevisionHistory',
+                'PresenceList', 'Comments', 'TrackChanges', 'TrackChangesData',
+                'RevisionHistory', 'Pagination', 'WProofreader', 'MathType',
+                'SlashCommand', 'Template', 'DocumentOutline', 'FormatPainter',
+                'TableOfContents', 'PasteFromOfficeEnhanced'
             ]
         })
             .then(editor => {
-                editorInstance = editor;
+                editorInstance = editor; // Lưu instance editor để sử dụng sau này
             })
             .catch(error => {
                 console.error(error);
             });
 
-        // Auth Check
+        // Kiểm tra trạng thái đăng nhập
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 alert("Vui lòng đăng nhập để đăng tin.");
@@ -227,27 +174,28 @@
             }
         });
 
-        // Check for Edit Mode
+        // Kiểm tra chế độ Chỉnh sửa (Edit Mode) thông qua URL parameter 'id'
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('id');
 
         if (editId) {
+            // Nếu có editId, thay đổi tiêu đề và nút submit
             document.querySelector('h3').innerHTML = '<i class="fas fa-edit me-2"></i>Chỉnh sửa Tin PR';
             const submitBtn = document.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Cập nhật';
 
-            // Load Data
+            // Tải dữ liệu bài viết từ Firestore
             const docRef = doc(db, "pr_articles", editId);
             getDoc(docRef).then((docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
+                    // Điền dữ liệu vào các trường
                     document.getElementById('pr-title').value = data.title;
 
-                    // Set content to CKEditor
+                    // Đặt nội dung cho CKEditor
                     if (editorInstance) {
                         editorInstance.setData(data.content || '');
                     } else {
-                        // If editor not ready yet, wait a bit or set value to textarea
                         document.getElementById('pr-content').value = data.content;
                     }
 
@@ -260,7 +208,7 @@
             });
         }
 
-        // Form Submit
+        // Xử lý sự kiện Submit Form
         const createPrForm = document.getElementById('create-pr-form');
         createPrForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -268,13 +216,14 @@
             if (!user) return;
 
             const title = document.getElementById('pr-title').value;
-            // Get content from CKEditor
+            // Lấy nội dung từ CKEditor
             const content = editorInstance ? editorInstance.getData() : document.getElementById('pr-content').value;
             const link = document.getElementById('pr-link').value;
             const image = document.getElementById('pr-image').value;
 
             try {
                 if (editId) {
+                    // Cập nhật bài viết hiện có
                     await updateDoc(doc(db, "pr_articles", editId), {
                         title: title,
                         content: content,
@@ -284,6 +233,7 @@
                     });
                     alert("Cập nhật thành công!");
                 } else {
+                    // Thêm bài viết mới
                     await addDoc(collection(db, "pr_articles"), {
                         title: title,
                         content: content,
@@ -295,6 +245,7 @@
                     });
                     alert("Đăng tin thành công!");
                 }
+                // Chuyển hướng về trang danh sách PR
                 window.location.href = "pr.html";
             } catch (error) {
                 console.error("Error adding/updating document: ", error);

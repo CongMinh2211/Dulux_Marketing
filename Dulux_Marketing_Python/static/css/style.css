@@ -1,22 +1,23 @@
 /* =========================================
    1. FONTS & VARIABLES (PREMIUM LOOK)
    ========================================= */
+/* Import font Montserrat và Open Sans từ Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap');
 
 :root {
-    /* Brand Colors */
+    /* Brand Colors: Màu sắc thương hiệu */
     --dulux-blue: #005EB8;
     --dulux-teal: #00A9CE;
     --dulux-dark-blue: #003B73;
     --dulux-orange: #EA7600;
 
-    /* Neutrals & Accents */
+    /* Neutrals & Accents: Màu trung tính và điểm nhấn */
     --text-dark: #2c3e50;
     --text-light: #6c757d;
     --bg-light: #f8f9fa;
     --white: #ffffff;
 
-    /* Effects */
+    /* Effects: Hiệu ứng giao diện */
     --glass-bg: rgba(255, 255, 255, 0.85);
     --glass-border: 1px solid rgba(255, 255, 255, 0.3);
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -25,6 +26,7 @@
     /* Prevent fixed navbar overlap */
 }
 
+/* Typography: Cấu hình font chữ cho tiêu đề */
 h4,
 h5,
 h6 {
@@ -40,6 +42,7 @@ a {
 /* =========================================
    3. HERO SECTION (PARALLAX & ANIMATION)
    ========================================= */
+/* Hero Section: Phần banner chính với hiệu ứng parallax */
 .hero-section {
     position: relative;
     height: 100vh;
@@ -58,6 +61,7 @@ a {
     padding-top: 100px;
 }
 
+/* Overlay: Lớp phủ màu tối trên banner */
 .hero-overlay {
     position: absolute;
     top: 0;
@@ -74,6 +78,7 @@ a {
     padding-top: 60px;
 }
 
+/* Hero Title: Tiêu đề lớn trên banner */
 .hero-title {
     font-size: 4rem;
     font-weight: 800;
@@ -83,6 +88,7 @@ a {
     animation: fadeInUp 1s ease-out;
 }
 
+/* Hero Subtitle: Tiêu đề phụ */
 .hero-subtitle {
     font-size: 1.4rem;
     font-weight: 400;
@@ -91,6 +97,7 @@ a {
     animation: fadeInUp 1s ease-out 0.2s backwards;
 }
 
+/* Keyframes: Hiệu ứng xuất hiện dần từ dưới lên */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -106,6 +113,7 @@ a {
 /* =========================================
    4. PREMIUM BUTTONS
    ========================================= */
+/* Primary Button: Nút chính với gradient */
 .btn-primary-custom {
     background: var(--gradient-primary);
     border: none;
@@ -123,6 +131,7 @@ a {
     z-index: 1;
 }
 
+/* Hover Effect: Hiệu ứng khi di chuột vào nút */
 .btn-primary-custom::before {
     content: '';
     position: absolute;
@@ -146,6 +155,7 @@ a {
     opacity: 1;
 }
 
+/* Outline Button: Nút viền */
 .btn-outline-custom {
     background: transparent;
     border: 2px solid var(--dulux-blue);
@@ -174,6 +184,7 @@ section {
     margin-bottom: 70px;
 }
 
+/* Section Title Styling: Gạch chân trang trí */
 .section-title h2 {
     font-size: 2.5rem;
     color: var(--dulux-dark-blue);
@@ -193,6 +204,7 @@ section {
     border-radius: 2px;
 }
 
+/* Card Styling: Hiệu ứng nổi cho thẻ */
 .p-4.rounded {
     border-radius: 20px !important;
     transition: all 0.4s ease;
@@ -204,7 +216,7 @@ section {
     box-shadow: var(--shadow-hover) !important;
 }
 
-/* Product Cards */
+/* Product Cards: Thẻ sản phẩm */
 .product-card {
     border: none;
     border-radius: 16px;
@@ -251,6 +263,7 @@ section {
 /* =========================================
    6. TIMELINE & ABOUT (Refined)
    ========================================= */
+/* Timeline Styling: Dòng thời gian trang giới thiệu */
 .timeline::after {
     background: var(--gradient-primary);
     width: 4px;
@@ -284,6 +297,7 @@ section {
 /* =========================================
    7. VISUALIZER & TOOLS
    ========================================= */
+/* Visualizer: Công cụ phối màu */
 .visualizer-container {
     border-radius: 25px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
@@ -300,6 +314,7 @@ section {
     z-index: 10;
 }
 
+/* Calculator: Công cụ tính sơn */
 .calculator-card {
     border-radius: 25px;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -367,6 +382,7 @@ footer i {
 /* =========================================
    9. SIDEBAR & FILTERS
    ========================================= */
+/* Sidebar Filter: Bộ lọc bên trái trang sản phẩm */
 .sidebar-filter {
     background: white;
     padding: 20px;
@@ -398,6 +414,7 @@ footer i {
     padding-left: 5px;
 }
 
+/* Search Box: Ô tìm kiếm */
 .search-box {
     position: relative;
     margin-bottom: 30px;
@@ -572,6 +589,7 @@ footer i {
 /* =========================================
    12. DULUX BRAND ENHANCEMENTS
    ========================================= */
+/* Flourish: Dải màu trang trí đặc trưng của Dulux */
 .dulux-flourish {
     height: 6px;
     background: linear-gradient(90deg, #EA7600 0%, #E94E1B 20%, #C6007E 40%, #005EB8 60%, #00A9CE 80%, #93C90E 100%);
@@ -580,6 +598,7 @@ footer i {
     z-index: 1020;
 }
 
+/* Navbar Styling: Thanh điều hướng kính mờ */
 .navbar {
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(10px);
@@ -623,6 +642,7 @@ footer i {
     background: #f0f0f0;
 }
 
+/* Wall Overlay: Lớp phủ màu lên tường */
 .wall-overlay {
     position: absolute;
     top: 0;
@@ -631,7 +651,7 @@ footer i {
     height: 100%;
     background-color: transparent;
     mix-blend-mode: multiply;
-    /* Key for realistic paint effect */
+    /* Key for realistic paint effect: Chế độ hòa trộn giúp màu sơn trông thật hơn */
     transition: background-color 0.5s ease;
     pointer-events: none;
     /* Let clicks pass through if needed */
@@ -655,13 +675,14 @@ footer i {
 /* =========================================
    15. EXPANDED PALETTE STYLES
    ========================================= */
+/* Scrollable Palette: Bảng màu có thanh cuộn */
 .scrollable-palette {
     max-height: 400px;
     overflow-y: auto;
     padding-right: 5px;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar: Tùy chỉnh thanh cuộn */
 .scrollable-palette::-webkit-scrollbar {
     width: 6px;
 }
@@ -709,7 +730,7 @@ footer i {
     border-color: white;
 }
 
-/* Tooltip on hover */
+/* Tooltip on hover: Hiển thị tên màu khi di chuột */
 .color-swatch::after {
     content: attr(data-name);
     position: absolute;
@@ -732,7 +753,7 @@ footer i {
     opacity: 1;
 }
 
-/* Nav Pills Custom */
+/* Nav Pills Custom: Tùy chỉnh tab điều hướng */
 .nav-pills .nav-link {
     color: var(--text-light);
     font-weight: 600;
@@ -798,519 +819,3 @@ footer i {
     /* Counteract body padding */
     padding-top: 100px;
 }
-
-.about-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 59, 115, 0.7);
-    /* Dark blue overlay */
-}
-
-.value-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.3s ease;
-    height: 100%;
-    text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.value-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--dulux-teal);
-}
-
-.value-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--bg-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    color: var(--dulux-blue);
-    font-size: 2rem;
-    transition: all 0.3s;
-}
-
-.value-card:hover .value-icon {
-    background: var(--dulux-blue);
-    color: white;
-}
-
-.gallery-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 15px;
-    margin-bottom: 24px;
-    cursor: pointer;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.5s ease;
-    display: block;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-.team-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.3s;
-}
-
-.team-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-hover);
-}
-
-.team-img {
-    height: 300px;
-    overflow: hidden;
-}
-
-.team-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s;
-}
-
-
-.filter-category h6 {
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-}
-
-.custom-checkbox .form-check-input {
-    width: 1.2em;
-    height: 1.2em;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.custom-checkbox .form-check-input:checked {
-    background-color: var(--dulux-teal);
-    border-color: var(--dulux-teal);
-}
-
-.custom-checkbox .form-check-label {
-    font-size: 0.95rem;
-    color: #555;
-    cursor: pointer;
-}
-
-/* Product Card Redesign */
-.product-card-new {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: white;
-    padding: 20px;
-    height: 100%;
-    transition: all 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card-new:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    border-color: transparent;
-}
-
-.product-card-new .wishlist-icon {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.product-card-new .wishlist-icon:hover {
-    color: var(--dulux-orange);
-}
-
-.product-card-new img {
-    max-height: 200px;
-    object-fit: contain;
-    margin-bottom: 20px;
-    align-self: center;
-}
-
-.product-card-new h5 {
-    font-size: 1.1rem;
-    color: var(--dulux-dark-blue);
-    font-weight: 700;
-    margin-bottom: 15px;
-    line-height: 1.4;
-    min-height: 3.3em;
-    /* 2 lines approx */
-}
-
-.product-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    flex-grow: 1;
-}
-
-.product-features li {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.product-features li i {
-    color: var(--dulux-teal);
-    margin-right: 8px;
-    margin-top: 3px;
-}
-
-.store-link {
-    display: flex;
-    align-items: center;
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-    text-decoration: none;
-}
-
-.store-link i {
-    margin-right: 5px;
-}
-
-.store-link:hover {
-    color: var(--dulux-blue);
-}
-
-.card-actions {
-    display: flex;
-    justify-content: flex-end;
-    /* Align to right */
-    align-items: center;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 15px;
-    margin-top: auto;
-}
-
-/* =========================================
-   19. BUG FIXES & OVERRIDES
-   ========================================= */
-/* FORCE HIDE INACTIVE TABS */
-/* This fixes the issue where multiple tabs stack on top of each other */
-.tab-pane:not(.active) {
-    display: none !important;
-}
-
-/* =========================================
-   20. COMMUNITY SECTION STYLES (New)
-   ========================================= */
-
-/* Create Post Box */
-.create-post-box {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: var(--shadow-soft);
-    margin-bottom: 30px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.create-post-box:hover {
-    box-shadow: var(--shadow-hover);
-}
-
-.create-post-box input.form-control,
-.create-post-box textarea.form-control {
-    background-color: #f8f9fa;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.create-post-box input.form-control:focus,
-.create-post-box textarea.form-control:focus {
-    background-color: white;
-    border-color: var(--dulux-teal);
-    box-shadow: 0 0 0 4px rgba(0, 169, 206, 0.1);
-}
-
-.create-post-box textarea {
-    resize: none;
-}
-
-/* Post Card */
-.post-card {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.5s ease-out;
-}
-
-.post-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.post-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.user-avatar {
-    width: 45px;
-    height: 45px;
-    background: var(--gradient-primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-right: 15px;
-    box-shadow: 0 5px 15px rgba(0, 94, 184, 0.2);
-}
-
-.post-info h6 {
-    margin: 0;
-    color: var(--dulux-dark-blue);
-    font-weight: 700;
-}
-
-.post-info small {
-    color: var(--text-light);
-    font-size: 0.85rem;
-}
-
-.post-content {
-    margin-bottom: 20px;
-}
-
-.post-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 10px;
-}
-
-.post-content p {
-    color: #555;
-    line-height: 1.6;
-}
-
-.post-image {
-    width: 100%;
-    border-radius: 15px;
-    margin-top: 15px;
-    object-fit: cover;
-    max-height: 400px;
-    box-shadow: var(--shadow-soft);
-}
-
-/* Post Actions */
-.card-footer {
-    background: transparent;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 15px;
-    margin-top: 15px;
-}
-
-.btn-light {
-    background: #f8f9fa;
-    border: none;
-    color: var(--text-light);
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.btn-light:hover {
-    background: #e9ecef;
-    color: var(--dulux-blue);
-    transform: translateY(-2px);
-}
-
-/* Loading Spinner */
-.loading-spinner {
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.pr-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.pr-card-img-wrapper {
-    position: relative;
-    height: 220px;
-    overflow: hidden;
-}
-
-.pr-card-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.pr-card:hover .pr-card-img-wrapper img {
-    transform: scale(1.05);
-}
-
-.pr-delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #dc3545;
-    color: white;
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0.9;
-    transition: all 0.2s;
-    z-index: 10;
-}
-
-.pr-delete-btn:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.pr-card-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.pr-date {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.pr-date i {
-    margin-right: 6px;
-}
-
-.pr-title {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.pr-title a:hover {
-    color: var(--dulux-blue);
-}
-
-.pr-btn {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--dulux-blue);
-    color: var(--dulux-blue);
-    background: transparent;
-    border-radius: 6px;
-    font-weight: 600;
-    text-align: center;
-    transition: all 0.3s;
-    display: block;
-    text-decoration: none;
-}
-
-.pr-btn:hover {
-    background: var(--dulux-blue);
-    color: white;
-}
-
-.pr-edit-btn {
-    position: absolute;
-    top: 10px;
-    right: 50px;
-    background: #ffc107;
-    color: white;
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0.9;
-    transition: all 0.2s;
-    z-index: 10;
-}
-
-.pr-edit-btn:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-
-/* =========================================
-   19. IDEAS PAGE STYLES
-   ========================================= */
-.idea-color-filter {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.idea-color-filter:hover {
-    transform: scale(1.2);
-    z-index: 10;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.idea-color-filter.active-filter {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 2px var(--dulux-blue);
-    z-index: 10;
-}
-
-/* Ensure dropdown menu on hover for desktop if needed, 
-   but Bootstrap default is click. Keeping click for consistency. */

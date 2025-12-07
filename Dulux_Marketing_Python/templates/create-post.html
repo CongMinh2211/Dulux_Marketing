@@ -34,7 +34,7 @@
                                 placeholder="Nhập tiêu đề..." required>
                         </div>
 
-                        <!-- Word Upload -->
+                        <!-- Word Upload: Tính năng tải lên file Word để tự động điền nội dung -->
                         <div class="mb-4">
                             <label class="form-label fw-bold"><i class="fas fa-file-word me-1 text-primary"></i>Tải lên
                                 từ Word (.docx)</label>
@@ -49,6 +49,7 @@
 
                         <div class="mb-4">
                             <label for="post-content" class="form-label fw-bold">Nội dung bài viết</label>
+                            <!-- Textarea này sẽ được thay thế bởi TinyMCE Editor -->
                             <textarea class="form-control" id="post-content" rows="15"
                                 placeholder="Chia sẻ câu chuyện của bạn..."></textarea>
                         </div>
@@ -72,7 +73,7 @@
 
     {% include 'partials/footer.html' %}
 
-    <!-- TinyMCE -->
+    <!-- TinyMCE: Trình soạn thảo văn bản phong phú -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
@@ -107,10 +108,10 @@
         });
     </script>
 
-    <!-- Mammoth.js -->
+    <!-- Mammoth.js: Thư viện chuyển đổi file Word sang HTML -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs: Tích hợp Firebase để lưu trữ bài viết -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -130,7 +131,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Check for Edit Mode
+        // Check for Edit Mode: Kiểm tra xem có phải đang chỉnh sửa bài viết không
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get('id');
         const formTitle = document.querySelector('h3');
@@ -166,7 +167,7 @@
             }
         }
 
-        // Auth Check
+        // Auth Check: Kiểm tra đăng nhập
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 // alert("Vui lòng đăng nhập để đăng bài viết.");
@@ -174,7 +175,7 @@
             }
         });
 
-        // Helper to log status
+        // Helper to log status: Hiển thị trạng thái tải file
         function logStatus(message, isError = false) {
             const statusDiv = document.getElementById('upload-status');
             if (!statusDiv) return;
@@ -184,7 +185,7 @@
             statusDiv.scrollTop = statusDiv.scrollHeight;
         }
 
-        // Image Compression Helper
+        // Image Compression Helper: Nén ảnh khi chuyển từ Word
         function compressImage(fileBlob) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -220,7 +221,7 @@
             });
         }
 
-        // Handle Word Upload
+        // Handle Word Upload: Xử lý sự kiện tải lên file Word
         document.getElementById('word-upload').addEventListener('change', function (event) {
             const file = this.files[0];
             if (!file) return;
@@ -280,7 +281,7 @@
             reader.readAsArrayBuffer(file);
         });
 
-        // Handle Form Submit
+        // Handle Form Submit: Xử lý đăng bài
         document.getElementById('create-post-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const user = auth.currentUser;

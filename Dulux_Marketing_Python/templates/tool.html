@@ -16,7 +16,7 @@
 <body>
     {% include 'partials/header.html' %}
 
-    <!-- Visualizer Section -->
+    <!-- Visualizer Section: Công cụ phối màu trực quan -->
     <section class="py-5">
         <div class="container">
             <div class="section-title text-center" data-aos="fade-up">
@@ -25,30 +25,30 @@
             </div>
 
             <div class="row g-4">
-                <!-- Visualizer Area -->
+                <!-- Visualizer Area: Khu vực hiển thị hình ảnh phòng -->
                 <div class="col-lg-8" data-aos="fade-right">
                     <div class="visualizer-wrapper shadow-lg rounded-4 overflow-hidden position-relative">
-                        <!-- Background Room Image -->
+                        <!-- Background Room Image: Hình ảnh gốc của căn phòng -->
                         <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
                             class="img-fluid w-100" alt="Room Visualizer" style="display: block;">
 
-                        <!-- Wall Overlay (This blends with the wall) -->
+                        <!-- Wall Overlay: Lớp phủ màu lên tường (sử dụng blend-mode trong CSS) -->
                         <div id="wall-overlay" class="wall-overlay"></div>
 
-                        <!-- Info Label -->
+                        <!-- Info Label: Hiển thị tên màu đang chọn -->
                         <div class="visualizer-info">
                             <span id="color-name-display">Màu hiện tại: Mặc định</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Color Palette Area -->
+                <!-- Color Palette Area: Khu vực chọn màu -->
                 <div class="col-lg-4" data-aos="fade-left">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-header bg-white border-0 pt-4 px-4">
                             <h4 class="text-primary fw-bold mb-0">Bảng Màu Dulux</h4>
 
-                            <!-- Tabs for Color Categories -->
+                            <!-- Tabs for Color Categories: Các tab phân loại màu (Ấm, Lạnh, Trung tính) -->
                             <ul class="nav nav-pills mt-3" id="colorTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active rounded-pill btn-sm me-1" id="warm-tab"
@@ -68,8 +68,7 @@
 
                         <div class="card-body px-4 pb-4">
                             <div class="tab-content" id="colorTabsContent">
-                                <!-- Warm Colors -->
-                                <!-- Warm Colors -->
+                                <!-- Warm Colors: Danh sách màu ấm -->
                                 <div class="tab-pane fade show active" id="warm" role="tabpanel">
                                     <div class="color-palette-grid scrollable-palette">
                                         <!-- Reds -->
@@ -161,8 +160,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Cool Colors -->
-                                <!-- Cool Colors -->
+                                <!-- Cool Colors: Danh sách màu lạnh -->
                                 <div class="tab-pane fade" id="cool" role="tabpanel">
                                     <div class="color-palette-grid scrollable-palette">
                                         <!-- Greens -->
@@ -306,11 +304,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Neutral Colors -->
-                                <!-- Neutral Colors -->
+                                <!-- Neutral Colors: Danh sách màu trung tính -->
                                 <div class="tab-pane fade" id="neutral" role="tabpanel">
                                     <div class="color-palette-grid scrollable-palette">
-                                        <!-- Black & White (Requested) -->
+                                        <!-- Black & White -->
                                         <div class="color-swatch" style="background-color: #000000;"
                                             data-color="#000000" data-name="Đen Tuyền" onclick="changeWallColor(this)">
                                         </div>
@@ -464,7 +461,7 @@
         </div>
     </section>
 
-    <!-- Paint Calculator Section -->
+    <!-- Paint Calculator Section: Công cụ tính lượng sơn cần thiết -->
     <section class="bg-light-custom py-5">
         <div class="container">
             <div class="section-title text-center" data-aos="fade-up">
@@ -479,7 +476,7 @@
                         class="img-fluid rounded-4 shadow" alt="Painting Tools">
                 </div>
 
-                <!-- Calculator Form Side -->
+                <!-- Calculator Form Side: Form nhập kích thước phòng -->
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="calculator-card bg-white p-5 rounded-4 shadow-sm border">
                         <form id="paintCalculator">
@@ -513,6 +510,7 @@
                             </div>
                         </form>
 
+                        <!-- Result Box: Hiển thị kết quả tính toán -->
                         <div id="calcResult" class="result-box text-center mt-4 pt-4 border-top" style="display: none;">
                             <h5 class="text-muted mb-2">Tổng Lượng Sơn Cần Thiết</h5>
                             <p class="mb-0 display-4 fw-bold text-primary" id="litresResult">0 Lít</p>
@@ -525,7 +523,7 @@
         </div>
     </section>
 
-    <!-- Inspiration Corner -->
+    <!-- Inspiration Corner: Góc cảm hứng với các hình ảnh mẫu -->
     <section class="py-5">
         <div class="container">
             <div class="section-title text-center" data-aos="fade-up">
