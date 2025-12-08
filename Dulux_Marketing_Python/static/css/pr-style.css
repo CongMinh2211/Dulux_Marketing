@@ -1,0 +1,154 @@
+/* =========================================
+   PR CARD STYLES (News/PR Articles)
+   ========================================= */
+/* PR Card Styling: Thẻ bài viết tin tức/PR */
+.pr-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pr-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 94, 184, 0.15);
+}
+
+/* PR Card Image Wrapper */
+.pr-card-img-wrapper {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.pr-card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.pr-card:hover .pr-card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+/* PR Card Edit/Delete Buttons */
+.pr-edit-btn,
+.pr-delete-btn {
+    position: absolute;
+    top: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.pr-edit-btn {
+    right: 50px;
+    color: var(--dulux-blue);
+}
+
+.pr-edit-btn:hover {
+    background: var(--dulux-blue);
+    color: white;
+}
+
+.pr-delete-btn {
+    right: 10px;
+    color: #dc3545;
+}
+
+.pr-delete-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* PR Card Body */
+.pr-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* PR Date */
+.pr-date {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.pr-date i {
+    margin-right: 5px;
+    color: var(--dulux-teal);
+}
+
+/* PR Title */
+.pr-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.pr-title a {
+    color: var(--dulux-dark-blue);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.pr-title a:hover {
+    color: var(--dulux-blue);
+}
+
+/* PR Description */
+.pr-desc {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    flex: 1;
+    line-height: 1.6;
+}
+
+/* PR Button */
+.pr-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    align-self: flex-start;
+}
+
+.pr-btn:hover {
+    transform: translateX(5px);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 94, 184, 0.3);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.loading-spinner .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}

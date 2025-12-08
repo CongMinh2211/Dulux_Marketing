@@ -676,11 +676,11 @@ function filterIdeas() {
         });
     }
 
-    // Color Click Event
+    // Sự kiện nhấp chuột màu
     const colorFilters = document.querySelectorAll('.idea-color-filter');
     colorFilters.forEach(filter => {
         filter.addEventListener('click', function () {
-            // Remove active class from others
+            // Xóa lớp đang hoạt động khỏi các lớp khác
             colorFilters.forEach(f => f.classList.remove('active-filter'));
             this.classList.add('active-filter');
 
@@ -689,7 +689,7 @@ function filterIdeas() {
         });
     });
 
-    // Initial Render
+    // Kết xuất ban đầu
     applyFilter(selectedColor, selectedLocation, selectedMood, selectedStyle);
 }
 
@@ -720,10 +720,10 @@ function showToast(message, type = 'success') {
     const toastBody = document.getElementById('toast-message');
 
     if (toastEl && toastBody) {
-        // Set Message
+        // Set Message toast thông báo
         toastBody.textContent = message;
 
-        // Set Color based on Type
+        // Đặt màu dựa trên loại
         toastEl.classList.remove('bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info');
 
         switch (type) {
@@ -747,7 +747,7 @@ function showToast(message, type = 'success') {
         const toast = new bootstrap.Toast(toastEl);
         toast.show();
     } else {
-        console.warn('Toast container not found!');
+        console.warn('Không tìm thấy hộp đựng thông báo Toast.');
         alert(message); // Fallback
     }
 }
