@@ -45,11 +45,8 @@ a {
 /* Hero Section: Phần banner chính với hiệu ứng parallax */
 .hero-section {
     position: relative;
-    height: 70vh;
-    /* Reduced from 100vh to 70vh for better UX */
-    min-height: 500px;
-    max-height: 700px;
-    /* Prevent banner from being too tall */
+    height: 100vh;
+    min-height: 600px;
     background-color: #003B73;
     /* Fallback Dark Blue */
     background-attachment: fixed;
@@ -555,13 +552,6 @@ footer i {
         /* Reduce padding */
     }
 
-    .hero-section {
-        height: 60vh;
-        /* Smaller on tablets */
-        min-height: 450px;
-        max-height: 600px;
-    }
-
     .hero-title {
         font-size: 2.8rem;
         /* Smaller hero title */
@@ -601,9 +591,8 @@ footer i {
     .hero-section {
         background-attachment: scroll;
         height: auto;
-        min-height: 400px;
-        max-height: 500px;
-        /* Prevent too tall banners on mobile */
+        min-height: auto;
+        /* Allow content to dictate height */
         padding-top: 80px;
         /* Adjust for smaller navbar */
         padding-bottom: 60px;
